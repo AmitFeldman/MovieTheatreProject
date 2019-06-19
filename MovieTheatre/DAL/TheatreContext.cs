@@ -19,9 +19,13 @@ namespace MovieTheatre.DAL
 
         public DbSet<Movie> Movies { get; set; }
 
+        public DbSet<User> User { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            Database.SetInitializer<Context>(null);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
