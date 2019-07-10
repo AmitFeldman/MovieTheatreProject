@@ -1,10 +1,12 @@
 ﻿@model IEnumerable<MovieTheatre.Models.Movie>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Manager Page";
 }
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -23,23 +25,105 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Genre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
 
 </table>
+
+<div>
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <div class="row">
+        <div id="Genres" class="element1 col-md-5"></div>
+        <div id="Directors" class="element2 col-md-7"></div>
+    </div>
+    <script type="text/javascript">
+        // Load google charts
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawDirectorsChart);
+
+        // Draw the chart and set the chart values
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Genre', 'Movies'],
+                ['Children', 20],
+                ['Action', 10],
+                ['Drama', 5],
+                ['Comedy', 4],
+                ["Romantic", 3],
+                ['Horror', 2]
+            ]);
+
+            // Optional; add a title and set the width and height of the chart
+            var options = { 'title': 'Movies Genres', 'width': 550, 'height': 400 };
+
+            // Display the chart inside the <div> element with id="Genres"
+            var chart = new google.visualization.PieChart(document.getElementById('Genres'));
+            chart.draw(data, options);
+        }
+        // Draw the chart and set the chart values
+        function drawDirectorsChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Genre', 'Movies'],
+                ['Jameson Cameron', 20],
+                ['Alfred Hitchcock', 10],
+                ['Steven Spielberg', 5],
+                ['Christopher Nolan', 4],
+                ["Quentin Tarantino", 3],
+                ['Charles Chaplin', 2]
+            ]);
+
+            // Optional; add a title and set the width and height of the chart
+            var options = { 'title': 'Movies of Directors', 'width': 550, 'height': 400 };
+
+            // Display the chart inside the <div> element with id="Directors"
+            var chart = new google.visualization.PieChart(document.getElementById('Directors'));
+            chart.draw(data, options);
+        }
+
+    </script>
+    <script>
+        window.onload = function () {
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                    text: "Highest rated movies"
+                },
+                axisY: {
+                    includeZero: false
+                },
+                data: [{
+                    type: "line",
+                    dataPoints: [
+                        { y: 5, indexLabel: "Finding Nemo", markerColor: "red", markerType: "triangle" },
+                        { y: 4.14, indexLabel: "Harry Potter" },
+                        { y: 3.2, indexLabel: "Terminator" },
+                        { y: 3.1, indexLabel: "Aladin" },
+                        { y: 2.99, indexLabel: "Jumangi" },
+                        { y: 2, indexLabel: "Holmes and Watson", markerColor: "DarkSlateGrey", markerType: "cross" }
+                    ]
+                }]
+            });
+            chart.render();
+        }
+    </script>
+</div>
