@@ -126,6 +126,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MovieController.cs" />
+    <Compile Include="Controllers\RatingController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DAL\TheatreContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -139,8 +140,13 @@
     <Compile Include="Migrations\201906192052296_MyNewTableAdded.Designer.cs">
       <DependentUpon>201906192052296_MyNewTableAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907110918535_MyNewTableAdded1.cs" />
+    <Compile Include="Migrations\201907110918535_MyNewTableAdded1.Designer.cs">
+      <DependentUpon>201907110918535_MyNewTableAdded1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -196,6 +202,11 @@
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Rating\Create.cshtml" />
+    <Content Include="Views\Rating\Delete.cshtml" />
+    <Content Include="Views\Rating\Details.cshtml" />
+    <Content Include="Views\Rating\Edit.cshtml" />
+    <Content Include="Views\Rating\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -219,6 +230,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906192052296_MyNewTableAdded.resx">
       <DependentUpon>201906192052296_MyNewTableAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907110918535_MyNewTableAdded1.resx">
+      <DependentUpon>201907110918535_MyNewTableAdded1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
