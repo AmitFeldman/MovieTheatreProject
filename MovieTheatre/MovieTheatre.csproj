@@ -63,6 +63,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -143,6 +144,10 @@
     <Compile Include="Migrations\201907110918535_MyNewTableAdded1.cs" />
     <Compile Include="Migrations\201907110918535_MyNewTableAdded1.Designer.cs">
       <DependentUpon>201907110918535_MyNewTableAdded1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907182346190_AddPosterAndTrailer.cs" />
+    <Compile Include="Migrations\201907182346190_AddPosterAndTrailer.Designer.cs">
+      <DependentUpon>201907182346190_AddPosterAndTrailer.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Movie.cs" />
@@ -233,6 +238,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907110918535_MyNewTableAdded1.resx">
       <DependentUpon>201907110918535_MyNewTableAdded1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907182346190_AddPosterAndTrailer.resx">
+      <DependentUpon>201907182346190_AddPosterAndTrailer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

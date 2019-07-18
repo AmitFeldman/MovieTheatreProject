@@ -8,16 +8,42 @@ using System.Web;
 using System.Web.Mvc;
 using MovieTheatre.DAL;
 using MovieTheatre.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MovieTheatre.Controllers
 {
     public class MovieController : Controller
     {
         private Context db = new Context();
+        public string[] Posters { get; set; }
 
         // GET: Movie
         public ActionResult Index()
         {
+            var client = new WebClient();
+            string movieName = "";
+            string httpString = "";
+            int index = 0;
+            //Movie[] movies = new Movie[10];
+            Movie movie = new Movie();
+            Posters = new string[10];
+            foreach (var item in db.Movies){
+                movieName = item.Name;
+                httpString = "http://www.omdbapi.com/?t=" +
+                              movieName + "&apikey=4c2cc9b2";
+                var json = client.DownloadString(httpString);
+                var data = (JObject)JsonConvert.DeserializeObject(json);
+                //movie.Name = data["Title"].Value<string>();
+                //movie.Genre = data["Genre"].Value<string>();
+                //movie.Description = data["Plot"].Value<string>();
+                //movie.Name = item.Name;
+                //movie.Genre = item.Genre;
+                //movie.Description = item.Description;
+                //movie.Poster = data["Poster"].Value<string>();
+                item.Poster = data["Poster"].Value<string>();
+                //Posters[index++] = (data["Poster"].Value<string>()); 
+            }
             return View(db.Movies.ToList());
         }
 
