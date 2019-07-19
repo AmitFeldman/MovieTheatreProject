@@ -149,6 +149,10 @@
     <Compile Include="Migrations\201907182346190_AddPosterAndTrailer.Designer.cs">
       <DependentUpon>201907182346190_AddPosterAndTrailer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907191245340_Added_director_and_year.cs" />
+    <Compile Include="Migrations\201907191245340_Added_director_and_year.Designer.cs">
+      <DependentUpon>201907191245340_Added_director_and_year.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Rating.cs" />
@@ -241,6 +245,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907182346190_AddPosterAndTrailer.resx">
       <DependentUpon>201907182346190_AddPosterAndTrailer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907191245340_Added_director_and_year.resx">
+      <DependentUpon>201907191245340_Added_director_and_year.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

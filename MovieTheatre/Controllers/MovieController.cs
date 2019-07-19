@@ -22,28 +22,26 @@ namespace MovieTheatre.Controllers
         public ActionResult Index()
         {
             var client = new WebClient();
-            string movieName = "";
             string httpString = "";
-            int index = 0;
-            //Movie[] movies = new Movie[10];
             Movie movie = new Movie();
             Posters = new string[10];
-            foreach (var item in db.Movies){
-                movieName = item.Name;
-                httpString = "http://www.omdbapi.com/?t=" +
-                              movieName + "&apikey=4c2cc9b2";
-                var json = client.DownloadString(httpString);
-                var data = (JObject)JsonConvert.DeserializeObject(json);
-                //movie.Name = data["Title"].Value<string>();
-                //movie.Genre = data["Genre"].Value<string>();
-                //movie.Description = data["Plot"].Value<string>();
-                //movie.Name = item.Name;
-                //movie.Genre = item.Genre;
-                //movie.Description = item.Description;
-                //movie.Poster = data["Poster"].Value<string>();
-                item.Poster = data["Poster"].Value<string>();
-                //Posters[index++] = (data["Poster"].Value<string>()); 
+            foreach (var item in db.Movies) {
+                if (item.Poster == null || item.Description == null ||
+                    item.Director == null || item.Year == null) {
+                    httpString = "http://www.omdbapi.com/?t=" +
+                                  item.Name +
+                                  "&y=" + item.Year +
+                                  "&apikey=4c2cc9b2";
+                    var json = client.DownloadString(httpString);
+                    var data = (JObject)JsonConvert.DeserializeObject(json);
+                    item.Poster      = data["Poster"].Value<string>();
+                    item.Description = data["Plot"].Value<string>();
+                    item.Director    = data["Director"].Value<string>();
+                    item.Year        = data["Year"].Value<string>();
+                    //Posters[index++] = (data["Poster"].Value<string>()); 
+                }
             }
+            db.SaveChanges();
             return View(db.Movies.ToList());
         }
 
@@ -73,7 +71,7 @@ namespace MovieTheatre.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Genre,Description")] Movie movie)
+        public ActionResult Create([Bind(Include = "ID,Name,Genre,Description,Director,Poster,Trailer")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +103,7 @@ namespace MovieTheatre.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Genre,Description")] Movie movie)
+        public ActionResult Edit([Bind(Include = "ID,Name,Genre,Description,Director,Poster,Trailer")] Movie movie)
         {
             if (ModelState.IsValid)
             {
