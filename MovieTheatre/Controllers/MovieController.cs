@@ -34,10 +34,12 @@ namespace MovieTheatre.Controllers
                                   "&apikey=4c2cc9b2";
                     var json = client.DownloadString(httpString);
                     var data = (JObject)JsonConvert.DeserializeObject(json);
-                    item.Poster      = data["Poster"].Value<string>();
-                    item.Description = data["Plot"].Value<string>();
-                    item.Director    = data["Director"].Value<string>();
-                    item.Year        = data["Year"].Value<string>();
+                    if (data["Response"].Value<string>() == "True"){
+                        item.Poster = data["Poster"].Value<string>();
+                        item.Description = data["Plot"].Value<string>();
+                        item.Director = data["Director"].Value<string>();
+                        item.Year = data["Year"].Value<string>();
+                    }
                     //Posters[index++] = (data["Poster"].Value<string>()); 
                 }
             }
