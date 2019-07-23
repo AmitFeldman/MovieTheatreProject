@@ -16,9 +16,17 @@ namespace MovieTheatre.Controllers
         private Context db = new Context();
 
         // GET: User
-        public ActionResult Index()
+        public ActionResult Index(string userName)
         {
-            return View(db.User.ToList());
+            var users = from m in db.User
+                         select m;
+
+            if (!String.IsNullOrEmpty(userName))
+            {
+                users = users.Where(s => s.Name.Contains(userName));
+            }
+
+            return View(users.ToList());
         }
 
         // GET: User/Details/5
