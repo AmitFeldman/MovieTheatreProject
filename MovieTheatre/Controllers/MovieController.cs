@@ -8,16 +8,40 @@ using System.Web;
 using System.Web.Mvc;
 using MovieTheatre.DAL;
 using MovieTheatre.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MovieTheatre.Controllers
 {
     public class MovieController : Controller
     {
         private Context db = new Context();
+        public string[] Posters { get; set; }
 
         // GET: Movie
         public ActionResult Index()
         {
+            var client = new WebClient();
+            string httpString = "";
+            Movie movie = new Movie();
+            Posters = new string[10];
+            foreach (var item in db.Movies) {
+                if (item.Poster == null || item.Description == null ||
+                    item.Director == null || item.Year == null) {
+                    httpString = "http://www.omdbapi.com/?t=" +
+                                  item.Name +
+                                  "&y=" + item.Year +
+                                  "&apikey=4c2cc9b2";
+                    var json = client.DownloadString(httpString);
+                    var data = (JObject)JsonConvert.DeserializeObject(json);
+                    item.Poster      = data["Poster"].Value<string>();
+                    item.Description = data["Plot"].Value<string>();
+                    item.Director    = data["Director"].Value<string>();
+                    item.Year        = data["Year"].Value<string>();
+                    //Posters[index++] = (data["Poster"].Value<string>()); 
+                }
+            }
+            db.SaveChanges();
             return View(db.Movies.ToList());
         }
 
@@ -47,7 +71,7 @@ namespace MovieTheatre.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Genre,Description")] Movie movie)
+        public ActionResult Create([Bind(Include = "ID,Name,Genre,Description,Director,Poster,Trailer")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +103,7 @@ namespace MovieTheatre.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Genre,Description")] Movie movie)
+        public ActionResult Edit([Bind(Include = "ID,Name,Genre,Description,Director,Poster,Trailer")] Movie movie)
         {
             if (ModelState.IsValid)
             {
