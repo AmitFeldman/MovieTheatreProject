@@ -153,6 +153,10 @@
     <Compile Include="Migrations\201907191245340_Added_director_and_year.Designer.cs">
       <DependentUpon>201907191245340_Added_director_and_year.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907232041273_SamuelPullMigration.cs" />
+    <Compile Include="Migrations\201907232041273_SamuelPullMigration.Designer.cs">
+      <DependentUpon>201907232041273_SamuelPullMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Rating.cs" />
@@ -216,6 +220,7 @@
     <Content Include="Views\Rating\Details.cshtml" />
     <Content Include="Views\Rating\Edit.cshtml" />
     <Content Include="Views\Rating\Index.cshtml" />
+    <Content Include="Views\Home\LogIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -248,6 +253,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907191245340_Added_director_and_year.resx">
       <DependentUpon>201907191245340_Added_director_and_year.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907232041273_SamuelPullMigration.resx">
+      <DependentUpon>201907232041273_SamuelPullMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
