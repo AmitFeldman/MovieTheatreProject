@@ -23,24 +23,26 @@ namespace MovieTheatre.Controllers
         {
             var client = new WebClient();
             string httpString = "";
-            Movie movie = new Movie();
-            Posters = new string[10];
-            foreach (var item in db.Movies) {
+            foreach (var item in db.Movies)
+            {
                 if (item.Poster == null || item.Description == null ||
-                    item.Director == null || item.Year == null) {
+                    item.Director == null || item.Year == null ||
+                    item.Genre == null)
+                {
                     httpString = "http://www.omdbapi.com/?t=" +
                                   item.Name +
                                   "&y=" + item.Year +
                                   "&apikey=4c2cc9b2";
                     var json = client.DownloadString(httpString);
                     var data = (JObject)JsonConvert.DeserializeObject(json);
-                    if (data["Response"].Value<string>() == "True"){
+                    if (data["Response"].Value<string>() == "True")
+                    {
                         item.Poster = data["Poster"].Value<string>();
                         item.Description = data["Plot"].Value<string>();
                         item.Director = data["Director"].Value<string>();
                         item.Year = data["Year"].Value<string>();
+                        item.Genre = data["Genre"].Value<string>();
                     }
-                    //Posters[index++] = (data["Poster"].Value<string>()); 
                 }
             }
             db.SaveChanges();
@@ -60,6 +62,29 @@ namespace MovieTheatre.Controllers
                 return HttpNotFound();
             }
             return View(movie);
+        }
+
+        public ActionResult CallWebService(Movie formMovie)
+        {
+            var client = new WebClient();
+            Movie movie = new Movie();
+            string httpString = "";
+           /* httpString = "http://www.omdbapi.com/?t=" +
+                                  name +
+                                  //  "&y=" + item.Year +
+                                  "&apikey=4c2cc9b2";
+            var json = client.DownloadString(httpString);
+            var data = (JObject)JsonConvert.DeserializeObject(json);
+            if (data["Response"].Value<string>() == "True")
+            {
+                movie.Name = data["Title"].Value<string>();
+                movie.Poster = data["Poster"].Value<string>();
+                movie.Description = data["Plot"].Value<string>();
+                movie.Director = data["Director"].Value<string>();
+                movie.Year = data["Year"].Value<string>();
+                movie.Genre = data["Genre"].Value<string>();
+            }*/
+            return RedirectToAction("Create", movie);
         }
 
         // GET: Movie/Create
