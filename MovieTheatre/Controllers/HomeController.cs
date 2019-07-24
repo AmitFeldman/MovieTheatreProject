@@ -31,5 +31,12 @@ namespace MovieTheatre.Controllers
 
             return View();
         }
+
+        public ActionResult LogIn()
+        {
+            ViewBag.Message = "Your login page.";
+
+            return View();
+        }
     }
 }

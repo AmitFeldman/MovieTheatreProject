@@ -7,7 +7,7 @@ namespace MovieTheatre.Migrations
     {
         public override void Up()
         {
-            CreateTable(
+            /*CreateTable(
                 "dbo.Movie",
                 c => new
                     {
@@ -16,13 +16,13 @@ namespace MovieTheatre.Migrations
                         Genre = c.String(),
                         Description = c.String(),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.ID);*/
             
         }
         
         public override void Down()
         {
-            DropTable("dbo.Movie");
+            //DropTable("dbo.Movie");
         }
     }
 }
