@@ -10,12 +10,30 @@
     <h4>Movie</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dd>
+            <img src=@Html.DisplayFor(model => model.Poster) height="250px" width="250px">
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Director)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Director)
         </dd>
 
         <dt>
