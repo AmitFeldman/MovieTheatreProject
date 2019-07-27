@@ -35,11 +35,11 @@ namespace MovieTheatre.Controllers
                     tableBuilder += "<tr width=\"100%\">";
                 }
 
-                tableBuilder += "<td text-align=center>";
-                // tableBuilder += "<tr><img src="+ @Html.DisplayFor(modelItem => item.Poster +") height=\"250px\" width=\"250px\"></tr>";
+                tableBuilder += "<td text-align=center width=\"30%\">";
+                tableBuilder += "<img src="+ item.Poster + " height=\"90%\" width=\"80%\"></br>";
                 tableBuilder += item.Name + "</br>";
                 tableBuilder += item.Year + "</br>";
-                tableBuilder += item.Genre + "</br></br></br></br>";
+                tableBuilder += item.Genre + "</br></br></br>";
                 tableBuilder += "</td>";
             }
 
