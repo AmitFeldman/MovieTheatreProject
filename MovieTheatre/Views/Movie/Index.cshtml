@@ -161,17 +161,11 @@
             "header": { "title": { "text": "Genres", "fontSize": 22, "font": "verdana" }, "subtitle": { "text": "The number of  movies from every genre", "color": "#999999", "fontSize": 10, "font": "verdana" }, "titleSubtitlePadding": 12 }, "footer": { "text": ".", "color": "#999999", "fontSize": 11, "font": "open sans", "location": "bottom-center" }, "size": { "canvasHeight": 400, "canvasWidth": 590, "pieOuterRadius": "88%" },
             "data": {
                 "content":
-                
                 @Html.Raw(Json.Encode(@ViewBag.genres))
-                        // foreach(var genre in ViewBag.genres)
-                        //{
-                            //{ "label": genre.label, "value": genre.value, "color": genre.value }
-                          //  genre
-                        //}
-                        
-                //[{ "label": "Action", "value": 8, "color": "#cc6600" }, { "label": "Family", "value": 5, "color": "#669966" }, { "label": "Drama", "value": 2, "color": "#336600" }, { "label": "Comedy", "value": 3, "color": "#003366" }, { "label": "Horror", "value": 2, "color": "#0066cc" }, { "label": "Romantic", "value": 1, "color": "#bc0101" }]
-            },
+                   },
             "labels": { "outer": { "pieDistance": 32 }, "inner": { "format": "value" }, "mainLabel": { "font": "verdana" }, "percentage": { "color": "#e1e1e1", "font": "verdana", "decimalPlaces": 0 }, "value": { "color": "#e1e1e1", "font": "verdana" }, "lines": { "enabled": true, "color": "#cccccc" }, "truncation": { "enabled": true } }, "effects": { "pullOutSegmentOnClick": { "effect": "linear", "speed": 400, "size": 8 } }
         });
     </script>
+
+
 </div>

@@ -54,7 +54,7 @@ namespace MovieTheatre.Controllers
                          select new { Genre = g.Key, Amount = g.Count() };
 
             GenreListItem genreItem;
-            GenreListItem[] genreList = new GenreListItem[6];
+            GenreListItem[] genreList = new GenreListItem[genres.Count()];
             var index = 0;
             Color randomColor;
             foreach (var genre in genres)
@@ -68,7 +68,6 @@ namespace MovieTheatre.Controllers
                 genreList[index++] = genreItem;
             }
            ViewBag.genres = genreList;
-            Console.WriteLine(genres);
 
             return View(db.Movies.ToList());
         }
