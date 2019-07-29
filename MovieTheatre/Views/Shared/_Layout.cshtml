@@ -7,7 +7,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-@{ var userId = (int)Session["CurrentUser"]; }
+@{ var userId = Session["CurrentUser"]; }
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -24,12 +24,19 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("LogIn", "LogIn", "Home")</li>
-                    @if (userId == 54)
+                    @if (userId.ToString() == "1")
                     {
                         <li>@Html.ActionLink("Movies", "Index", "Movie")</li>
                         <li>@Html.ActionLink("Users", "Index", "User")</li>
                         <li>@Html.ActionLink("Ratings", "Index", "Rating")</li>
+                    }
+                    @if (userId.ToString() == "0")
+                    {
+                        <li>@Html.ActionLink("LogIn", "LogIn", "Home")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Logout", "LogIn", "Home")</li>
                     }
                 </ul>
             </div>

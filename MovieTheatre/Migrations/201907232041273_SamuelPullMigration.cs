@@ -7,7 +7,7 @@ namespace MovieTheatre.Migrations
     {
         public override void Up()
         {
-            CreateTable(
+            /*CreateTable(
                 "dbo.Rating",
                 c => new
                     {
@@ -30,20 +30,20 @@ namespace MovieTheatre.Migrations
                     })
                 .PrimaryKey(t => t.ID);
             
-            AddColumn("dbo.Movie", "Year", c => c.String());
+            /*AddColumn("dbo.Movie", "Year", c => c.String());
             AddColumn("dbo.Movie", "Director", c => c.String());
             AddColumn("dbo.Movie", "Poster", c => c.String());
-            AddColumn("dbo.Movie", "Trailer", c => c.String());
+            AddColumn("dbo.Movie", "Trailer", c => c.String());*/
         }
         
         public override void Down()
         {
-            DropColumn("dbo.Movie", "Trailer");
+            /*DropColumn("dbo.Movie", "Trailer");
             DropColumn("dbo.Movie", "Poster");
             DropColumn("dbo.Movie", "Director");
             DropColumn("dbo.Movie", "Year");
             DropTable("dbo.User");
-            DropTable("dbo.Rating");
+            DropTable("dbo.Rating");*/
         }
     }
 }

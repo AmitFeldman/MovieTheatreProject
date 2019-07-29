@@ -157,6 +157,10 @@
     <Compile Include="Migrations\201907232041273_SamuelPullMigration.Designer.cs">
       <DependentUpon>201907232041273_SamuelPullMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907291927242_Added password.cs" />
+    <Compile Include="Migrations\201907291927242_Added password.Designer.cs">
+      <DependentUpon>201907291927242_Added password.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GenreListItem.cs" />
     <Compile Include="Models\Movie.cs" />
@@ -259,6 +263,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907232041273_SamuelPullMigration.resx">
       <DependentUpon>201907232041273_SamuelPullMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907291927242_Added password.resx">
+      <DependentUpon>201907291927242_Added password.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

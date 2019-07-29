@@ -1,13 +1,31 @@
-﻿@{
+﻿@model MovieTheatre.Models.User
+@{
     ViewData["Title"] = "LogIn";
 }
 
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
-
-<form>
-    <label>Email</label>
-    @Html.TextBox("LogInEmail", null, new { @class = "form-control" })
-    <label>Password</label>
-    @Html.TextBox("LogInPassword", null, new { @class = "form-control" })
-</form>
+@using (Html.BeginForm("LogIn", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken() // this is for prevent CSRF attack
+    @Html.ValidationSummary(true)
+    <form>
+        <div class="col-md-10">
+            <label>Email</label>
+            @Html.TextBoxFor(a => a.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-10">
+            <label>Password</label>
+            @Html.PasswordFor(a => a.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-10">
+            <input type="submit" value="Login" name='button' />
+            <input type="button" value="Register" name='button' />
+        </div>
+        <div class="col-md-10">
+            <div style="color: red;font-weight:900;">@TempData["message"]</div>
+        </div>
+    </form>
+}
