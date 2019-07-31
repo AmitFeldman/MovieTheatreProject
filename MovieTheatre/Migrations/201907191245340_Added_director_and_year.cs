@@ -7,8 +7,8 @@ namespace MovieTheatre.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Movie", "Year", c => c.String(nullable: false));
-            AddColumn("dbo.Movie", "Director", c => c.String());
+           /* AddColumn("dbo.Movie", "Year", c => c.String(nullable: false));
+            AddColumn("dbo.Movie", "Director", c => c.String());*/
         }
         
         public override void Down()

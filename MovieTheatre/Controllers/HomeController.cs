@@ -1,5 +1,8 @@
 ﻿using MovieTheatre.DAL;
+using MovieTheatre.Models;
 using System;
+using System.Data.Entity;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -17,8 +20,16 @@ namespace MovieTheatre.Controllers
             // System.Web.Security.FormsAuthentication.SetAuthCookie("54", false);
             // string userid = HttpContext.User.Identity.Name;
             //HttpContext.Current.Session["userId"] = 5;
-            Session.Add("CurrentUser", 54);
-            int userid = (int)Session["CurrentUser"];
+
+
+            try
+            {
+                var userid = Session["CurrentUser"];
+                if (userid == null)
+                    Session.Add("CurrentUser", 0);
+            }
+            catch { Session.Add("CurrentUser", 0); }
+
 
 
             var tableBuilder = "";
@@ -36,7 +47,7 @@ namespace MovieTheatre.Controllers
                 }
 
                 tableBuilder += "<td text-align=center width=\"30%\">";
-                tableBuilder += "<img src="+ item.Poster + " height=\"90%\" width=\"80%\"></br>";
+                tableBuilder += "<img src=" + item.Poster + " height=\"90%\" width=\"80%\"></br>";
                 tableBuilder += item.Name + "</br>";
                 tableBuilder += item.Year + "</br>";
                 tableBuilder += item.Genre + "</br></br></br>";
@@ -63,11 +74,58 @@ namespace MovieTheatre.Controllers
             return View();
         }
 
-        public ActionResult LogIn()
+        public ActionResult LogIn(string button)
         {
+            Session.Add("CurrentUser", 0);
             ViewBag.Message = "Your login page.";
+
+            if (button == "Login")
+            {
+                //db.User.Where(s => s.Name.Contains(userName));
+            }
 
             return View();
         }
+
+        [HttpPost, ActionName("Login")]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogIn([Bind(Include = "Email,Password")]User u)
+        {
+
+            if (u.Email != null && u.Password != null)
+            {
+                //var v = db.User.Where(a = > a.Email.Equals(u.Email) && a.Password.Equals(u.Password)).FirstOrDefault();
+                var v =
+                (from user in db.User
+                 where user.Email.Equals(u.Email) && user.Password.Equals(u.Password)
+                 select user.ID).FirstOrDefault();
+                if (v != 0)
+                {
+                    Session.Remove("CurrentUser");
+                    Session.Add("CurrentUser", v.ToString());
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["message"] = "User not found";
+                }
+            }
+
+            return View(u);
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Remove("CurrentUser");
+            return Redirect("LogIn");
+        }
+
+        /*public ActionResult Register()
+        {
+            Session.Remove("CurrentUser");
+            Session.Add("CurrentUser",0);
+            //return Redirect("../User/Create");
+            return RedirectToAction("../User/Create");
+        }*/
     }
 }
