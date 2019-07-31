@@ -22,10 +22,18 @@
         </div>
         <div class="col-md-10">
             <input type="submit" value="Login" name='button' />
-            <input type="button" value="Register" name='button' />
+            @*<input type="button" onclick="Register()" value="Register" name='button' />*@
+            @Html.ActionLink("Register", "Create", "User")
         </div>
         <div class="col-md-10">
             <div style="color: red;font-weight:900;">@TempData["message"]</div>
         </div>
     </form>
 }
+@*<script>
+    function Register() {
+        $.get("/User/Create", function (data) {
+            $("p").html(data);
+        });
+    }
+</script>*@

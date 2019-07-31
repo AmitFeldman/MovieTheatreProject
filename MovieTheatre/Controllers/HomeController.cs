@@ -22,9 +22,13 @@ namespace MovieTheatre.Controllers
             //HttpContext.Current.Session["userId"] = 5;
 
 
-            try{ var userid = Session["CurrentUser"]; }
+            try
+            {
+                var userid = Session["CurrentUser"];
+                if (userid == null)
+                    Session.Add("CurrentUser", 0);
+            }
             catch { Session.Add("CurrentUser", 0); }
-
 
 
 
@@ -82,6 +86,7 @@ namespace MovieTheatre.Controllers
 
             return View();
         }
+
         [HttpPost, ActionName("Login")]
         [ValidateAntiForgeryToken]
         public ActionResult LogIn([Bind(Include = "Email,Password")]User u)
@@ -115,10 +120,12 @@ namespace MovieTheatre.Controllers
             return Redirect("LogIn");
         }
 
-        public ActionResult Register()
+        /*public ActionResult Register()
         {
             Session.Remove("CurrentUser");
-            return Redirect("LogIn");
-        }
+            Session.Add("CurrentUser",0);
+            //return Redirect("../User/Create");
+            return RedirectToAction("../User/Create");
+        }*/
     }
 }

@@ -19,7 +19,7 @@ namespace MovieTheatre.Controllers
         public ActionResult Index(string userName)
         {
             var users = from m in db.User
-                         select m;
+                        select m;
 
             if (!String.IsNullOrEmpty(userName))
             {
@@ -61,7 +61,10 @@ namespace MovieTheatre.Controllers
             {
                 db.User.Add(user);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                if (Session["CurrentUser"].ToString() == "1")
+                    return RedirectToAction("Index");
+                else
+                    return RedirectToAction("../Home/Index");
             }
 
             return View(user);
