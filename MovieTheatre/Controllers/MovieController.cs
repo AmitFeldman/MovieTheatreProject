@@ -20,11 +20,18 @@ namespace MovieTheatre.Controllers
         private Random rnd = new Random();
 
         // GET: Movie
-        public ActionResult Index()
+        public ActionResult Index(string movieName)
         {
+            var movies = from m in db.Movies
+                        select m;
+
+            if (!String.IsNullOrEmpty(movieName))
+            {
+                movies = movies.Where(s => s.Name.Contains(movieName));
+            }
             var client = new WebClient();
             string httpString = "";
-            foreach (var item in db.Movies)
+            foreach (var item in movies)
             {
                 if (item.Poster == null || item.Description == null ||
                     item.Director == null || item.Year == null ||
@@ -69,7 +76,7 @@ namespace MovieTheatre.Controllers
             }
            ViewBag.genres = genreList;
 
-            return View(db.Movies.ToList());
+            return View(movies.ToList());
         }
 
         // GET: Movie/Details/5
