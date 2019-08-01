@@ -6,6 +6,16 @@
     <title>@ViewBag.Title - Movie Theatre</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      // Load the Visualization API and the corechart package.
+        google.charts.load('current', { 'packages': ['corechart', 'gauge'] });
+    </script>
+</head>
 </head>
 @{ var userId = (int)Session["CurrentUser"]; }
 <body>
@@ -43,8 +53,10 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_EN/sdk.js#xfbml=1&version=v3.3"></script>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

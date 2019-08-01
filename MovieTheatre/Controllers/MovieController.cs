@@ -48,50 +48,23 @@ namespace MovieTheatre.Controllers
             }
             db.SaveChanges();
 
-            // Genrate the Genres graph
-            var genres = from m in db.Movies
-                         group m by m.Genre into g
-                         select new { Genre = g.Key, Amount = g.Count() };
-            //select new { Genre = g.Key, Amount = g.Count() };
-
-            GenreListItem genreItem;
-            GenreListItem[] genreList = new GenreListItem[genres.Count()+1];
-            var index = 0;
-            Color randomColor;
-            genreItem = new GenreListItem();
-            genreItem.label = "Genre";
-            genreItem.value = 1;
-            genreList[index++] = genreItem;
-            foreach (var genre in genres)
-            {
-                genreItem = new GenreListItem();
-                genreItem.label = genre.Genre;
-                genreItem.value = genre.Amount;
-                randomColor = new Color();
-                randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
-                //genreItem.color = randomColor.Name;
-                genreList[index++] = genreItem;
-            }
-            ViewBag.genres = genreList;
-
-            string[] genres2 = new string[genres.Count()];
-            string[] genres3;
-            string str = "";
-            foreach (var genre in genres)
-            {
-                genres3 = new string[2];
-                genres3[0] = genre.Genre;
-                genres3[1] = genre.Amount.ToString();
-                //genres2[index++] = genres3;
-                str = str + "[ " + genre.Genre.ToString() + "," + genre.Amount + " ],";
-            }
-            //ViewBag.genres = genres2;
-            str = str.Substring(0,str.Length-1);
-            //ViewBag.genres = str;
-
-            //ViewBag.genres = genreList;
             HigherRankedMovies();
             return View(db.Movies.ToList());
+        }
+
+        public ActionResult GetGenreData()
+        {
+            JsonResult result = new JsonResult();
+
+            // Get count of each genre
+            var genres = (from m in db.Movies
+                          group m by m.Genre into g
+                          select new GenreCount { genre = g.Key, amount = g.Count() });
+
+            var genreList = genres.ToList();
+            result = this.Json(genreList, JsonRequestBehavior.AllowGet);
+
+            return result;
         }
 
         // Generate the 10 higher rank movies
