@@ -3,7 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Movie Theatre</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <style type="text/css">
+        #body {
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+    </style>
+
+    <title>@ViewBag.Title - Movie Reviews</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
@@ -17,8 +25,8 @@
     </script>
 </head>
 </head>
-@{ var userId = (int)Session["CurrentUser"]; }
-<body>
+@{ var userId = Session["CurrentUser"]; }
+<body id="body">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -27,19 +35,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Movie Theatre", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Movie Reviews", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("LogIn", "LogIn", "Home")</li>
-                    @if (userId == 54)
+                    @if (userId.ToString() == "1")
                     {
                         <li>@Html.ActionLink("Movies", "Index", "Movie")</li>
                         <li>@Html.ActionLink("Users", "Index", "User")</li>
                         <li>@Html.ActionLink("Ratings", "Index", "Rating")</li>
+                    }
+                    @if (userId.ToString() == "0")
+                    {
+                        <li>@Html.ActionLink("LogIn", "LogIn", "Home")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Logout", "LogIn", "Home")</li>
                     }
                 </ul>
             </div>
@@ -49,7 +64,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Movie Theatre</p>
+            <p>&copy; @DateTime.Now.Year - Movie Reviews</p>
         </footer>
     </div>
 
@@ -58,5 +73,6 @@
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_EN/sdk.js#xfbml=1&version=v3.3"></script>
 
     @RenderSection("scripts", required: false)
+    @RenderSection("styles", required: false)
 </body>
 </html>
