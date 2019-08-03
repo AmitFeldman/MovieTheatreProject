@@ -17,11 +17,6 @@ namespace MovieTheatre.Controllers
 
         public ActionResult Index()
         {
-            // System.Web.Security.FormsAuthentication.SetAuthCookie("54", false);
-            // string userid = HttpContext.User.Identity.Name;
-            //HttpContext.Current.Session["userId"] = 5;
-
-
             try
             {
                 var userid = Session["CurrentUser"];
@@ -30,32 +25,8 @@ namespace MovieTheatre.Controllers
             }
             catch { Session.Add("CurrentUser", 0); }
 
-
-
-            var tableBuilder = "";
-            var columns = 3;
-            var data = db.Movies;
-            var movieList = data.ToList();
-
-            for (var index = 0; index < movieList.Count; index++)
-            {
-                var item = movieList[index];
-                if (index % columns == 0)
-                {
-                    if (index > 0) tableBuilder += "</tr>";
-                    tableBuilder += "<tr width=\"100%\">";
-                }
-
-                tableBuilder += "<td text-align=center width=\"30%\">";
-                tableBuilder += "<img src=" + item.Poster + " height=\"90%\" width=\"80%\"></br>";
-                tableBuilder += item.Name + "</br>";
-                tableBuilder += item.Year + "</br>";
-                tableBuilder += item.Genre + "</br></br></br>";
-                tableBuilder += "</td>";
-            }
-
-            tableBuilder += "</tr>";
-            ViewData["myTable"] = tableBuilder;
+            // TODO: Add logic for suggested movies
+            ViewData.Model = db.Movies.Take(3). ToList();
 
             return View();
         }
