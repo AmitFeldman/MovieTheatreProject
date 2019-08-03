@@ -1,0 +1,23 @@
+﻿content {
+    padding: 5%;
+}
+
+.reviews-container {
+    padding: 1em 0 0 1em;
+}
+
+.review-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.carousel-slide-wrapper {
+    width: inherit;
+    /* Override scaffolding.less */
+    height: inherit !important;
+}
+
+.carousel-slides-wrapper {
+    height: 550px;
+}
