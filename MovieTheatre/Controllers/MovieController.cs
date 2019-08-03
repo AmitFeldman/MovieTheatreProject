@@ -55,28 +55,34 @@ namespace MovieTheatre.Controllers
             }
             db.SaveChanges();
 
-            // Genrate the Genres graph
-            var genres = from m in db.Movies
-                         group m by m.Genre into g
-                         select new { Genre = g.Key, Amount = g.Count() };
+            HigherRankedMovies();
+            return View(db.Movies.ToList());
+        }
 
-            GenreListItem genreItem;
-            GenreListItem[] genreList = new GenreListItem[genres.Count()];
-            var index = 0;
-            Color randomColor;
-            foreach (var genre in genres)
-            {
-                genreItem = new GenreListItem();
-                genreItem.label = genre.Genre;
-                genreItem.value = genre.Amount;
-                randomColor = new Color();
-                randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
-                genreItem.color = randomColor.Name;
-                genreList[index++] = genreItem;
-            }
-           ViewBag.genres = genreList;
+        public ActionResult GetGenreData()
+        {
+            JsonResult result = new JsonResult();
 
-            return View(movies.ToList());
+            // Get count of each genre
+            var genres = (from m in db.Movies
+                          group m by m.Genre into g
+                          select new GenreCount { genre = g.Key, amount = g.Count() });
+
+            var genreList = genres.ToList();
+            result = this.Json(genreList, JsonRequestBehavior.AllowGet);
+
+            return result;
+        }
+
+        // Generate the 10 higher rank movies
+        public void HigherRankedMovies()
+        {
+            var movies = (from m in db.Movies
+                          join r in db.Rating on m.ID equals r.MovieID
+                          group r by m.Name into g
+                          orderby g.Average(p => p.Stars) descending
+                          select new { indexLabel = g.Key, y = g.Average(p => p.Stars) }).Take(10);
+            ViewBag.movieRating = movies;
         }
 
         // GET: Movie/Details/5
@@ -99,21 +105,21 @@ namespace MovieTheatre.Controllers
             var client = new WebClient();
             Movie movie = new Movie();
             string httpString = "";
-           /* httpString = "http://www.omdbapi.com/?t=" +
-                                  name +
-                                  //  "&y=" + item.Year +
-                                  "&apikey=4c2cc9b2";
-            var json = client.DownloadString(httpString);
-            var data = (JObject)JsonConvert.DeserializeObject(json);
-            if (data["Response"].Value<string>() == "True")
-            {
-                movie.Name = data["Title"].Value<string>();
-                movie.Poster = data["Poster"].Value<string>();
-                movie.Description = data["Plot"].Value<string>();
-                movie.Director = data["Director"].Value<string>();
-                movie.Year = data["Year"].Value<string>();
-                movie.Genre = data["Genre"].Value<string>();
-            }*/
+            /* httpString = "http://www.omdbapi.com/?t=" +
+                                   name +
+                                   //  "&y=" + item.Year +
+                                   "&apikey=4c2cc9b2";
+             var json = client.DownloadString(httpString);
+             var data = (JObject)JsonConvert.DeserializeObject(json);
+             if (data["Response"].Value<string>() == "True")
+             {
+                 movie.Name = data["Title"].Value<string>();
+                 movie.Poster = data["Poster"].Value<string>();
+                 movie.Description = data["Plot"].Value<string>();
+                 movie.Director = data["Director"].Value<string>();
+                 movie.Year = data["Year"].Value<string>();
+                 movie.Genre = data["Genre"].Value<string>();
+             }*/
             return RedirectToAction("Create", movie);
         }
 
