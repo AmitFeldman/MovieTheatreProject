@@ -12,6 +12,12 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<form asp-controller="Movie" asp-action="Index">
+    <p>
+        Title: <input type="text" name="movieSearch">
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <tr>
         <th>

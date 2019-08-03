@@ -16,9 +16,12 @@ namespace MovieTheatre.Controllers
         private Context db = new Context();
 
         // GET: Rating
-        public ActionResult Index()
+        public ActionResult Index(int userId = 0, int movieId = 0, int stars = 0)
         {
-            return View(db.Rating.ToList());
+            var ratings = db.Rating.Where(s => s.UserID  == userId  || userId  == 0)
+                                   .Where(s => s.MovieID == movieId || movieId == 0)
+                                   .Where(s => s.Stars   == stars   || stars   == 0);
+            return View(ratings.ToList());
         }
 
         // GET: Rating/Details/5
