@@ -1,115 +1,108 @@
 ﻿@model MovieTheatre.Models.Movie
 
-@{
-    ViewBag.Title = "Details";
+@section styles {
+    <link href="@Url.Content("~/Styles/MovieDetails.css")" rel="stylesheet" type="text/css" />
 }
 
-<h2>Details</h2>
+@{
+    ViewBag.Title = Model.Name;
+}
 
-<div>
-    <h4>Movie</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dd>
-            <img src=@Html.DisplayFor(model => model.Poster) height="250px" width="250px">
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+<header>
+    <h2>@ViewBag.Title <small>(@Model.Year)</small></h2>
+</header>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Year)
-        </dt>
+<hr />
 
-        <dd>
-            @Html.DisplayFor(model => model.Year)
-        </dd>
+<content class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <img class="img-rounded movie-image" src=@Model.Poster>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Director)
-        </dt>
+        <div class="col-sm-8">
+            <div id="trailer">
+                <iframe id="existing-iframe-example"
+                        width="640" height="360"
+                        src=@Model.Trailer
+                        frameborder="0"
+                        style="border: solid 4px #37474F"></iframe>
 
-        <dd>
-            @Html.DisplayFor(model => model.Director)
-        </dd>
+                <script type="text/javascript">
+                    var tag = document.createElement('script');
+                    tag.id = 'iframe-demo';
+                    tag.src = 'https://www.youtube.com/iframe_api';
+                    var firstScriptTag = document.getElementsByTagName('script')[0];
+                    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Genre)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Genre)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Trailer)
-        </dt>
-
-        <dd>
-            <iframe id="existing-iframe-example"
-                    width="640" height="360"
-                    src=@Html.DisplayFor(model => model.Trailer)
-                    frameborder="0"
-                    style="border: solid 4px #37474F"></iframe>
-
-            <script type="text/javascript">
-                var tag = document.createElement('script');
-                tag.id = 'iframe-demo';
-                tag.src = 'https://www.youtube.com/iframe_api';
-                var firstScriptTag = document.getElementsByTagName('script')[0];
-                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-                var player;
-                function onYouTubeIframeAPIReady() {
-                    player = new YT.Player('existing-iframe-example', {
-                        events: {
-                            'onReady': onPlayerReady,
-                            'onStateChange': onPlayerStateChange
+                    var player;
+                    function onYouTubeIframeAPIReady() {
+                        player = new YT.Player('existing-iframe-example', {
+                            events: {
+                                'onReady': onPlayerReady,
+                                'onStateChange': onPlayerStateChange
+                            }
+                        });
+                    }
+                    function onPlayerReady(event) {
+                        document.getElementById('existing-iframe-example').style.borderColor = '#FF6D00';
+                    }
+                    function changeBorderColor(playerStatus) {
+                        var color;
+                        if (playerStatus == -1) {
+                            color = "#37474F"; // unstarted = gray
+                        } else if (playerStatus == 0) {
+                            color = "#FFFF00"; // ended = yellow
+                        } else if (playerStatus == 1) {
+                            color = "#33691E"; // playing = green
+                        } else if (playerStatus == 2) {
+                            color = "#DD2C00"; // paused = red
+                        } else if (playerStatus == 3) {
+                            color = "#AA00FF"; // buffering = purple
+                        } else if (playerStatus == 5) {
+                            color = "#FF6DOO"; // video cued = orange
                         }
-                    });
-                }
-                function onPlayerReady(event) {
-                    document.getElementById('existing-iframe-example').style.borderColor = '#FF6D00';
-                }
-                function changeBorderColor(playerStatus) {
-                    var color;
-                    if (playerStatus == -1) {
-                        color = "#37474F"; // unstarted = gray
-                    } else if (playerStatus == 0) {
-                        color = "#FFFF00"; // ended = yellow
-                    } else if (playerStatus == 1) {
-                        color = "#33691E"; // playing = green
-                    } else if (playerStatus == 2) {
-                        color = "#DD2C00"; // paused = red
-                    } else if (playerStatus == 3) {
-                        color = "#AA00FF"; // buffering = purple
-                    } else if (playerStatus == 5) {
-                        color = "#FF6DOO"; // video cued = orange
+                        if (color) {
+                            document.getElementById('existing-iframe-example').style.borderColor = color;
+                        }
                     }
-                    if (color) {
-                        document.getElementById('existing-iframe-example').style.borderColor = color;
+                    function onPlayerStateChange(event) {
+                        changeBorderColor(event.data);
                     }
-                }
-                function onPlayerStateChange(event) {
-                    changeBorderColor(event.data);
-                }
-            </script>
-        </dd>
+                </script>
+            </div>
 
-    </dl>
-</div>
+            <div class="row">
+                <div class="col-sm-1">
+                    <span class="bold-text">Director</span>
+                </div>
+                <div class="col-sm-11">
+                    <span>@Model.Director</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1">
+                    <span class="bold-text">Genre</span>
+                </div>
+                <div class="col-sm-11">
+                    <span>@Model.Genre</span>
+                </div>
+            </div>
+
+            <br />
+
+            <p>@Model.Description</p>
+        </div>
+    </div>
+
+    <hr />
+
+    <div>
+        <h2>Reviews</h2>
+    </div>
+
+    <hr />
+</content>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
     @Html.ActionLink("Back to List", "Index")
