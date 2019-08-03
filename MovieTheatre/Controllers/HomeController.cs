@@ -15,6 +15,12 @@ namespace MovieTheatre.Controllers
         private Context db = new Context();
         public string[] Posters { get; set; }
 
+        public class HomeModel
+        {
+            public List<MovieTheatre.Models.Movie> suggestedMovies { get; set; }
+            public List<MovieTheatre.Models.Rating> latestReviews { get; set; }
+        }
+
         public ActionResult Index()
         {
             try
@@ -25,10 +31,12 @@ namespace MovieTheatre.Controllers
             }
             catch { Session.Add("CurrentUser", 0); }
 
-            // TODO: Add logic for suggested movies
-            ViewData.Model = db.Movies.Take(3). ToList();
+            // TODO: Add logic for suggested movies and latest reviews
+            HomeModel homeModel = new HomeModel();
+            homeModel.suggestedMovies = db.Movies.Take(5).ToList();
+            homeModel.latestReviews = db.Rating.OrderByDescending(item => item.ReviewDate).Take(3).ToList();
 
-            return View();
+            return View(homeModel);
         }
 
         public ActionResult About()
