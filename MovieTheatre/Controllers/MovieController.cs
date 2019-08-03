@@ -20,29 +20,29 @@ namespace MovieTheatre.Controllers
         private Random rnd = new Random();
 
         // GET: Movie
-        public ActionResult Index(string movieName)
+        public ActionResult Index(string movieSearch)
         {
-            var movies = from m in db.Movies
-                        select m;
-
-            if (!String.IsNullOrEmpty(movieName))
-            {
-                movies = movies.Where(s => s.Name.Contains(movieName));
-            }
             var client = new WebClient();
-            string httpString = "";
+            var movies = from m in db.Movies select m;
+
+            if (!String.IsNullOrEmpty(movieSearch))
+            {
+                movies = movies.Where(s => s.Name.Contains(movieSearch));
+            }
+
             foreach (var item in movies)
             {
                 if (item.Poster == null || item.Description == null ||
                     item.Director == null || item.Year == null ||
                     item.Genre == null)
                 {
-                    httpString = "http://www.omdbapi.com/?t=" +
+                    string httpString = "http://www.omdbapi.com/?t=" +
                                   item.Name +
                                   "&y=" + item.Year +
                                   "&apikey=4c2cc9b2";
                     var json = client.DownloadString(httpString);
                     var data = (JObject)JsonConvert.DeserializeObject(json);
+
                     if (data["Response"].Value<string>() == "True")
                     {
                         item.Poster = data["Poster"].Value<string>();
@@ -56,7 +56,8 @@ namespace MovieTheatre.Controllers
             db.SaveChanges();
 
             HigherRankedMovies();
-            return View(db.Movies.ToList());
+
+            return View(movies.ToList());
         }
 
         public ActionResult GetGenreData()
@@ -82,6 +83,7 @@ namespace MovieTheatre.Controllers
                           group r by m.Name into g
                           orderby g.Average(p => p.Stars) descending
                           select new { indexLabel = g.Key, y = g.Average(p => p.Stars) }).Take(10);
+
             ViewBag.movieRating = movies;
         }
 
