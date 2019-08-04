@@ -22,7 +22,6 @@ namespace MovieTheatre.Controllers
         // GET: Movie
         public ActionResult Index(string movieSearch)
         {
-            var client = new WebClient();
             var movies = from m in db.Movies select m;
 
             if (!String.IsNullOrEmpty(movieSearch))
@@ -30,6 +29,34 @@ namespace MovieTheatre.Controllers
                 movies = movies.Where(s => s.Name.Contains(movieSearch));
             }
 
+            GetMovieDetails(movies);
+
+            HigherRankedMovies();
+
+            return View(movies.ToList());
+        }
+
+        public ActionResult GetGenreData()
+        {
+            JsonResult result = new JsonResult();
+
+            // Get count of each genre
+            var genres = (from m in db.Movies
+                          group m by m.Genre into g
+                          orderby g.Count() descending
+                          select new GenreCount { genre = g.Key, amount = g.Count() });
+
+            var genreList = genres.ToList();
+            result = this.Json(genreList, JsonRequestBehavior.AllowGet);
+
+            return result;
+        }
+
+        // Get the movies from the webservice and saves them in db
+        public void GetMovieDetails(IQueryable<Movie> movies)
+        {
+            var client = new WebClient();
+            string genre;
             foreach (var item in movies)
             {
                 if (item.Poster == null || item.Description == null ||
@@ -49,30 +76,13 @@ namespace MovieTheatre.Controllers
                         item.Description = data["Plot"].Value<string>();
                         item.Director = data["Director"].Value<string>();
                         item.Year = data["Year"].Value<string>();
-                        item.Genre = data["Genre"].Value<string>();
+                        genre = data["Genre"].Value<string>();
+                        item.Genre = genre.Contains(",") ? genre.Substring(0, genre.IndexOf(',')) 
+                                                         : genre;
                     }
                 }
             }
             db.SaveChanges();
-
-            HigherRankedMovies();
-
-            return View(movies.ToList());
-        }
-
-        public ActionResult GetGenreData()
-        {
-            JsonResult result = new JsonResult();
-
-            // Get count of each genre
-            var genres = (from m in db.Movies
-                          group m by m.Genre into g
-                          select new GenreCount { genre = g.Key, amount = g.Count() });
-
-            var genreList = genres.ToList();
-            result = this.Json(genreList, JsonRequestBehavior.AllowGet);
-
-            return result;
         }
 
         // Generate the 10 higher rank movies
