@@ -39,6 +39,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav" style="width: 80%">
+                    @if (userId.ToString() != "0")
+                    {
+                        <li>@Html.ActionLink("Write a Review", "Create", "Rating")</li>
+                    }
+
                     @if (userId.ToString() == "1")
                     {
                         <li>@Html.ActionLink("Movies", "Index", "Movie")</li>
