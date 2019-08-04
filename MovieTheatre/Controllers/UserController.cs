@@ -18,7 +18,7 @@ namespace MovieTheatre.Controllers
         // GET: User
         public ActionResult Index(string userName)
         {
-            var users = from m in db.User
+            var users = from m in db.Users
                         select m;
 
             if (!String.IsNullOrEmpty(userName))
@@ -36,7 +36,7 @@ namespace MovieTheatre.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.User.Find(id);
+            User user = db.Users.Find(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -59,7 +59,7 @@ namespace MovieTheatre.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.User.Add(user);
+                db.Users.Add(user);
                 db.SaveChanges();
                 if (Session["CurrentUser"].ToString() == "1")
                     return RedirectToAction("Index");
@@ -77,7 +77,7 @@ namespace MovieTheatre.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.User.Find(id);
+            User user = db.Users.Find(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -108,7 +108,7 @@ namespace MovieTheatre.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = db.User.Find(id);
+            User user = db.Users.Find(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -121,8 +121,8 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            User user = db.User.Find(id);
-            db.User.Remove(user);
+            User user = db.Users.Find(id);
+            db.Users.Remove(user);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

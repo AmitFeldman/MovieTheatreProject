@@ -79,7 +79,7 @@ namespace MovieTheatre.Controllers
         public void HigherRankedMovies()
         {
             var movies = (from m in db.Movies
-                          join r in db.Rating on m.ID equals r.MovieID
+                          join r in db.Ratings on m.ID equals r.MovieID
                           group r by m.Name into g
                           orderby g.Average(p => p.Stars) descending
                           select new { indexLabel = g.Key, y = g.Average(p => p.Stars) }).Take(10);

@@ -130,6 +130,7 @@
     <Compile Include="Controllers\RatingController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DAL\TheatreContext.cs" />
+    <Compile Include="DAL\TheatreInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -164,6 +165,10 @@
     <Compile Include="Migrations\201908041651598_dbkeys.cs" />
     <Compile Include="Migrations\201908041651598_dbkeys.Designer.cs">
       <DependentUpon>201908041651598_dbkeys.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908042001171_added_isManager.cs" />
+    <Compile Include="Migrations\201908042001171_added_isManager.Designer.cs">
+      <DependentUpon>201908042001171_added_isManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GenreCount.cs" />
@@ -275,6 +280,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908041651598_dbkeys.resx">
       <DependentUpon>201908041651598_dbkeys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908042001171_added_isManager.resx">
+      <DependentUpon>201908042001171_added_isManager.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
