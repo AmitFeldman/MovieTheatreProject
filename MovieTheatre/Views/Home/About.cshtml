@@ -1,7 +1,77 @@
 ﻿@{
     ViewBag.Title = "About";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+@section styles {
+    <link href="@Url.Content("~/Styles/About.css")" rel="stylesheet" type="text/css" />
+}
+
+<content>
+    <div class="row">
+        <div class="box">
+            <div class="col-sm-12">
+                <hr>
+                <h2 class="intro-text text-center header-text">
+                    Meet Our
+                    <strong>Team</strong>
+                </h2>
+                <hr>
+            </div>
+            <div class="col-sm-3 text-center">
+                <img class="team-img" src="~/Content/Images/Raz.jpg" />
+                <h3>
+                    Raz K.
+                    <small>CEO</small>
+                </h3>
+            </div>
+            <div class="col-sm-3 text-center">
+                <img class="team-img" src="~/Content/Images/Amit.jpg" />
+                <h3>
+                    Amit F.
+                    <small>CTO</small>
+                </h3>
+            </div>
+            <div class="col-sm-3 text-center">
+                <img class="team-img" src="~/Content/Images/Adir.jpg" alt="">
+                <h3>
+                    Adir H.
+                    <small>Manager</small>
+                </h3>
+            </div>
+            <div class="col-sm-3 text-center">
+                <img class="team-img" src="~/Content/Images/Samuel.jpg" alt="">
+                <h3>
+                    Samuel Z.
+                    <small>Team-Leader</small>
+                </h3>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="about-container">
+        <p class="about-text">
+            One day four programmers set out on a journey to build the next greatest movie review webiste. The names of those
+            brave souls were Amit, Raz, Samuel, and Adir. Their names would be etched into the fabric of time in commemoration
+            of their actions. They started thinking it would be any old
+        </p>
+
+        <p class="about-text">
+            review website, ... how wrong they were. As soon as work began, their fingers effortlessly glided
+        </p>
+
+        <blockquote>
+            <p>
+                movie reviews are the lifeblood of the world;
+            </p>
+        </blockquote>
+
+        <p class="about-text">
+            along the keys creating readable and maintanable code. This was powered by their great passion for film. They knew
+            that movie reviews are the lifeblood of the world. Their website would go on to influence all world leaders to finally
+            achieve and maintain world peace.
+        </p>
+    </div>
+</content>
