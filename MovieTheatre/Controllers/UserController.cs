@@ -23,7 +23,7 @@ namespace MovieTheatre.Controllers
 
             if (!String.IsNullOrEmpty(userName))
             {
-                users = users.Where(s => s.Name.Contains(userName));
+                users = users.Where(s => s.Username.Contains(userName));
             }
 
             return View(users.ToList());
@@ -55,7 +55,7 @@ namespace MovieTheatre.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Email,Password")] User user)
+        public ActionResult Create([Bind(Include = "ID,Username,Email,Password")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace MovieTheatre.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Email,Password")] User user)
+        public ActionResult Edit([Bind(Include = "ID,Username,Email,Password")] User user)
         {
             if (ModelState.IsValid)
             {
