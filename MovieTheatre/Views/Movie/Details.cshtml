@@ -9,7 +9,17 @@
 }
 
 <header>
-    <h2>@ViewBag.Title <small>(@Model.Year)</small></h2>
+    <h2>
+        @ViewBag.Title
+        <small>(@Model.Year)</small>
+        <aside class="pull-right">
+            <div class="fb-share-button"
+                 data-href=@Html.DisplayFor(modelItem => @Model.Poster)
+                 data-layout="button"
+                 data-size="large">
+            </div>
+        </aside>
+    </h2>
 </header>
 
 <hr />

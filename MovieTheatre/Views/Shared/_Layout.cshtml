@@ -20,7 +20,7 @@
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      // Load the Visualization API and the corechart package.
+        // Load the Visualization API and the corechart package.
         google.charts.load('current', { 'packages': ['corechart', 'gauge'] });
     </script>
 </head>
@@ -38,23 +38,33 @@
                 @Html.ActionLink("Movie Reviews", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                <ul class="nav navbar-nav" style="width: 80%">
                     @if (userId.ToString() == "1")
                     {
                         <li>@Html.ActionLink("Movies", "Index", "Movie")</li>
                         <li>@Html.ActionLink("Users", "Index", "User")</li>
                         <li>@Html.ActionLink("Ratings", "Index", "Rating")</li>
                     }
+
+                    <li>
+                        <form asp-controller="Home" asp-action="Index">
+                            <div class="col-sm-10" style="padding: 3%">
+                                <input class="form-control" type="text" name="search">
+                            </div>
+                            <div class="col-sm-2" style="padding: 3%">
+                                <button class="btn btn-primary">Search</button>
+                            </div>
+                        </form>
+                    </li>
+
+                    <li class="pull-right">@Html.ActionLink("Contact", "Contact", "Home")</li>
                     @if (userId.ToString() == "0")
                     {
-                        <li>@Html.ActionLink("LogIn", "LogIn", "Home")</li>
+                        <li class="pull-right">@Html.ActionLink("LogIn", "LogIn", "Home")</li>
                     }
                     else
                     {
-                        <li>@Html.ActionLink("Logout", "LogIn", "Home")</li>
+                        <li class="pull-right">@Html.ActionLink("Logout", "LogIn", "Home")</li>
                     }
                 </ul>
             </div>
