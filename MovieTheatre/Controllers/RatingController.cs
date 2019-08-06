@@ -18,9 +18,9 @@ namespace MovieTheatre.Controllers
         // GET: Rating
         public ActionResult Index(int userId = 0, int movieId = 0, int stars = 0)
         {
-            var ratings = db.Ratings.Where(s => s.UserID  == userId  || userId  == 0)
+            var ratings = db.Ratings.Where(s => s.UserID == userId || userId == 0)
                                    .Where(s => s.MovieID == movieId || movieId == 0)
-                                   .Where(s => s.Stars   == stars   || stars   == 0);
+                                   .Where(s => s.Stars == stars || stars == 0);
             return View(ratings.ToList());
         }
 
@@ -52,11 +52,18 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,UserID,MovieID,Review,Stars,ReviewDate")] Rating rating)
         {
-            if (ModelState.IsValid)
+            var currentUserID = (int)Session["CurrentUserID"];
+            rating.ReviewDate = DateTime.Now;
+            rating.UserID = currentUserID;
+
+            if (currentUserID != 0)
             {
-                db.Ratings.Add(rating);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Ratings.Add(rating);
+                    db.SaveChanges();
+                    return Redirect("../User/Details/" + currentUserID);
+                }
             }
 
             return View(rating);

@@ -61,7 +61,11 @@ namespace MovieTheatre.Controllers
             {
                 db.Users.Add(user);
                 db.SaveChanges();
-                if (Session["CurrentUser"].ToString() == "1")
+
+                var currentUserID = (int) Session["CurrentUserID"];
+                var isCurrentUserManager = (Boolean) Session["isCurrentUserManager"];
+
+                if (currentUserID != 0 && isCurrentUserManager)
                     return RedirectToAction("Index");
                 else
                     return RedirectToAction("../Home/Index");

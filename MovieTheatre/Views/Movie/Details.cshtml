@@ -6,6 +6,7 @@
 
 @{
     ViewBag.Title = Model.Name;
+    var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
 }
 
 <header>
@@ -113,7 +114,11 @@
 
     <hr />
 </content>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+@if (isCurrentUserManager == true)
+{
+    <p>
+        @Html.ActionLink("Edit Movie", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("See All Movies", "Index")
+    </p>
+}

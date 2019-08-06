@@ -1,7 +1,8 @@
 ﻿@model MovieTheatre.Models.User
 
 @{
-    ViewBag.Title = @Model.Name;
+    ViewBag.Title = @Model.Username;
+    var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
 }
 <header>
     <h2 class="header-text">
@@ -20,7 +21,10 @@
 
 </content>
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+@if (isCurrentUserManager)
+{
+    <p>
+        @Html.ActionLink("Edit Review", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("See all Reviews", "Index")
+    </p>
+}
