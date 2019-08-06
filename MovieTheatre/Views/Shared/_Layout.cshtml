@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@ViewBag.Title - Movie Reviews</title>
+    <title>@ViewBag.Title - RASA Reviews</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
@@ -27,11 +27,15 @@
         currentUserID = (int)Session["CurrentUserID"];
         isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
     }
-    catch { }
+    catch
+    {
+        Session.Add("CurrentUserID", currentUserID);
+        Session.Add("isCurrentUserManager", isCurrentUserManager);
+    }
 }
 
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -39,7 +43,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Movie Reviews", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <a href="/">
+                    <canvas id="canvas-logo" width="170" height="45"></canvas>
+                </a>
+                <script>
+                    $(document).ready(() => {
+                        var canvas = $('#canvas-logo');
+                        var ctx = canvas[0].getContext("2d");
+                        ctx.strokeStyle = "white";
+                        ctx.font = "24px Verdanas";
+                        ctx.strokeText("RASA Reviews", 0, 33);
+                    })
+                </script>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav" style="width: 80%">
@@ -67,12 +82,12 @@
                 </ul>
             </div>
         </div>
-    </div>
+    </nav>
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Movie Reviews</p>
+            <p>&copy; @DateTime.Now.Year - RASA Reviews</p>
         </footer>
     </div>
 
