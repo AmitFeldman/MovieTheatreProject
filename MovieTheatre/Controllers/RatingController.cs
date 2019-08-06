@@ -16,7 +16,7 @@ namespace MovieTheatre.Controllers
         private Context db = new Context();
 
         // GET: Rating
-        public ActionResult Index(int userId = 0, int movieId = 0, int stars = 0)
+        public ActionResult Index(string username = "", string movieName = "", int stars = 0)
         {
             var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
 
@@ -25,9 +25,14 @@ namespace MovieTheatre.Controllers
                 return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
             }
 
-            var ratings = db.Ratings.Where(s => s.UserID == userId || userId == 0)
-                                   .Where(s => s.MovieID == movieId || movieId == 0)
-                                   .Where(s => s.Stars == stars || stars == 0);
+            var ratings = db.Ratings.Where(review => review.User.Username.Contains(username))
+                                   .Where(review => review.Movie.Name.Contains(movieName));
+
+            if (stars != 0)
+            {
+                ratings = ratings.Where(s => s.Stars == stars);
+            }
+                                   
             return View(ratings.ToList());
         }
 
@@ -56,6 +61,13 @@ namespace MovieTheatre.Controllers
         // GET: Rating/Create
         public ActionResult Create()
         {
+            var currentUserID = (int)Session["CurrentUserID"];
+
+            if (currentUserID == 0)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You have to log on or create an account to write a review!" });
+            }
+
             return View();
         }
 

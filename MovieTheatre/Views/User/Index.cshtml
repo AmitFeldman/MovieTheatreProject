@@ -1,20 +1,27 @@
 ﻿@model IEnumerable<MovieTheatre.Models.User>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Users";
 }
 
-<h2>Index</h2>
+<h2 class="header-text">Users</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New User", "Create")
 </p>
+
+
 <form asp-controller="User" asp-action="Index">
-    <p>
-        Title: <input type="text" name="userName">
-        <input type="submit" value="Filter" />
-    </p>
+    <div class="input-group" style="display: block;">
+        <input type="text" name="userName" class="form-control">
+        <div class="input-group-btn">
+            <button type="submit" class="btn btn-primary">Filter By Username</button>
+        </div>
+    </div>
 </form>
+
+<br />
+
 <table class="table">
     <tr>
         <th>

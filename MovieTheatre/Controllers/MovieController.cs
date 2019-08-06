@@ -19,16 +19,15 @@ namespace MovieTheatre.Controllers
         private Context db = new Context();
         private Random rnd = new Random();
 
+        public class MovieDetailsModel
+        {
+            public Movie movie { get; set; }
+            public List<MovieTheatre.Models.Rating> movieReviews { get; set; }
+        }
+
         // GET: Movie
         public ActionResult Index(string movieSearch)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
-
-            if (isCurrentUserManager == false)
-            {
-                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
-            }
-
             var client = new WebClient();
             var movies = from m in db.Movies select m;
 
@@ -106,10 +105,16 @@ namespace MovieTheatre.Controllers
             {
                 return HttpNotFound();
             }
-            return View(movie);
+
+            MovieDetailsModel detailsModel = new MovieDetailsModel();
+
+            detailsModel.movie = movie;
+            detailsModel.movieReviews = db.Ratings.Where(review => review.MovieID == movie.ID).ToList();
+
+            return View(detailsModel);
         }
 
-        public ActionResult CallWebService(Movie formMovie)
+        public ActionResult AutocompleteMovieData(string movieName)
         {
             var client = new WebClient();
             Movie movie = new Movie();
@@ -250,7 +255,12 @@ namespace MovieTheatre.Controllers
 
             Movie movie = db.Movies.Find(id);
             db.Movies.Remove(movie);
+
+            List<Rating> ratings = db.Ratings.Where((review) => review.MovieID == id).ToList();
+            ratings.ForEach((rating) => db.Ratings.Remove(rating));
+
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

@@ -1,30 +1,50 @@
-﻿@model MovieTheatre.Models.User
+﻿@model MovieTheatre.Controllers.UserController.UserDetailsModel
+
+@section styles {
+    <link href="@Url.Content("~/Styles/UserDetails.css")" rel="stylesheet" type="text/css" />
+}
 
 @{
-    ViewBag.Title = @Model.Username;
+    ViewBag.Title = @Model.user.Username;
     var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
 }
 <header>
     <h2 class="header-text">
-        @ViewBag.Title
-        <small> - @Model.Email</small>
+        Movie Reviews by @ViewBag.Title
     </h2>
+    <h3>@Model.user.Email</h3>
 </header>
 
-<hr />
-
 <content>
-    <h3>Reviews</h3>
+    @foreach (var review in Model.userReviews)
+    {
+        <hr />
 
-    <hr />
+        <section class="row">
+            <div class="col-sm-10">
+                <h4 class="@Html.Raw((review.Stars == 5) ? "avg-movie": (review.Stars > 5) ? "good-movie" : "bad-movie")">
+                    @review.Stars / 10
+                </h4>
+                <h5 class="review-text">@review.Review</h5>
+            </div>
+            <div class="col-sm-2">
+                <a href="/Movie/Details/@review.MovieID">
+                    <img class="review-img" src="@review.Movie.Poster" />
+                </a>
+            </div>
+        </section>
+    }
 
-
+    @if (Model.userReviews.Count == 0)
+    {
+        <h3>This user has not written any reviews yet.</h3>
+    }
 </content>
 
 @if (isCurrentUserManager)
 {
     <p>
-        @Html.ActionLink("Edit Review", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Edit Review", "Edit", new { id = Model.user.ID }) |
         @Html.ActionLink("See all Reviews", "Index")
     </p>
 }

@@ -1,30 +1,37 @@
 ﻿@model IEnumerable<MovieTheatre.Models.Rating>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Reviews";
 }
 
-<h2>Index</h2>
+<h2 class="header-text">Reviews</h2>
 
 <form asp-controller="Rating" asp-action="Index">
-    <div class="col-md-10">
-        <label>
-            User  ID:
-        </label> <input type="number" name="userId">
-        <label>
-            Movie ID:
-        </label> <input type="number" name="movieId">
-        <label>      Stars: </label>   <input type="number" name="stars">
-        <input type="submit" value="Filter" />
+    <div class="input-group">
+        <label class="input-group-addon">Username</label>
+        <input type="text" name="username" class="form-control">
+
+        <label class="input-group-addon">Movie Name</label>
+        <input type="text" name="movieName" class="form-control">
+
+        <label class="input-group-addon">Stars</label>
+        <input type="number" name="stars" class="form-control">
+
+        <div class="input-group-btn">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
     </div>
 </form>
+
+<br />
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.UserID)
+            Username
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.MovieID)
+            Movie Name
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Review)
@@ -42,10 +49,10 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserID)
+                @Html.DisplayFor(modelItem => item.User.Username)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MovieID)
+                @Html.DisplayFor(modelItem => item.Movie.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Review)
