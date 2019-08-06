@@ -34,7 +34,7 @@ namespace MovieTheatre.Controllers
             // TODO: Add logic for suggested movies and latest reviews
             HomeModel homeModel = new HomeModel();
             homeModel.suggestedMovies = db.Movies.Take(5).ToList();
-            homeModel.latestReviews = db.Rating.OrderByDescending(item => item.ReviewDate).Take(3).ToList();
+            homeModel.latestReviews = db.Ratings.OrderByDescending(item => item.ReviewDate).Take(3).ToList();
 
             return View(homeModel);
         }
@@ -75,7 +75,7 @@ namespace MovieTheatre.Controllers
             {
                 //var v = db.User.Where(a = > a.Email.Equals(u.Email) && a.Password.Equals(u.Password)).FirstOrDefault();
                 var v =
-                (from user in db.User
+                (from user in db.Users
                  where user.Email.Equals(u.Email) && user.Password.Equals(u.Password)
                  select user.ID).FirstOrDefault();
                 if (v != 0)

@@ -42,13 +42,13 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    @if (userId.ToString() == "1")
+                    @if (userId.ToString() == "1" || userId.ToString() == "6")
                     {
                         <li>@Html.ActionLink("Movies", "Index", "Movie")</li>
                         <li>@Html.ActionLink("Users", "Index", "User")</li>
                         <li>@Html.ActionLink("Ratings", "Index", "Rating")</li>
                     }
-                    @if (userId.ToString() == "0")
+                    @if (userId.ToString() == "0" )
                     {
                         <li>@Html.ActionLink("LogIn", "LogIn", "Home")</li>
                     }
