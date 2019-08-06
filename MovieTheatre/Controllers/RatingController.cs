@@ -18,6 +18,13 @@ namespace MovieTheatre.Controllers
         // GET: Rating
         public ActionResult Index(int userId = 0, int movieId = 0, int stars = 0)
         {
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+
+            if (isCurrentUserManager == false)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            }
+
             var ratings = db.Ratings.Where(s => s.UserID == userId || userId == 0)
                                    .Where(s => s.MovieID == movieId || movieId == 0)
                                    .Where(s => s.Stars == stars || stars == 0);
@@ -27,6 +34,13 @@ namespace MovieTheatre.Controllers
         // GET: Rating/Details/5
         public ActionResult Details(int? id)
         {
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+
+            if (isCurrentUserManager == false)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -72,6 +86,13 @@ namespace MovieTheatre.Controllers
         // GET: Rating/Edit/5
         public ActionResult Edit(int? id)
         {
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+
+            if (isCurrentUserManager == false)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -91,6 +112,13 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,UserID,MovieID,Review,Stars,ReviewDate")] Rating rating)
         {
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+
+            if (isCurrentUserManager == false)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(rating).State = EntityState.Modified;
@@ -103,6 +131,13 @@ namespace MovieTheatre.Controllers
         // GET: Rating/Delete/5
         public ActionResult Delete(int? id)
         {
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+
+            if (isCurrentUserManager == false)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -120,6 +155,13 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+
+            if (isCurrentUserManager == false)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            }
+
             Rating rating = db.Ratings.Find(id);
             db.Ratings.Remove(rating);
             db.SaveChanges();

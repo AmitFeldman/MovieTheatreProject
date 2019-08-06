@@ -18,9 +18,15 @@
     </script>
 </head>
 
-@{ 
-    var currentUserID = (int) Session["CurrentUserID"];
-    var isCurrentUserManager = (Boolean) Session["isCurrentUserManager"];
+@{
+    var currentUserID = 0;
+    var isCurrentUserManager = false;
+
+    try
+    {
+        currentUserID = (int)Session["CurrentUserID"];
+        isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+    } catch {}
 }
 
 <body>
