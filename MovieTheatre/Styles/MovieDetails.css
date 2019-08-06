@@ -1,0 +1,8 @@
+﻿.bold-text {
+    font-weight: bold;
+}
+
+.movie-image {
+    max-height: 500px;
+    width: 100%;
+}

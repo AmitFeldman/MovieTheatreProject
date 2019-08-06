@@ -4,13 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
-    <style type="text/css">
-        #body {
-            font-family: 'Roboto Condensed', sans-serif;
-        }
-    </style>
-
     <title>@ViewBag.Title - Movie Reviews</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -20,13 +13,23 @@
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      // Load the Visualization API and the corechart package.
+        // Load the Visualization API and the corechart package.
         google.charts.load('current', { 'packages': ['corechart', 'gauge'] });
     </script>
 </head>
-</head>
-@{ var userId = Session["CurrentUser"]; }
-<body id="body">
+
+@{
+    var currentUserID = 0;
+    var isCurrentUserManager = false;
+
+    try
+    {
+        currentUserID = (int)Session["CurrentUserID"];
+        isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+    } catch {}
+}
+
+<body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -38,24 +41,41 @@
                 @Html.ActionLink("Movie Reviews", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    @if (userId.ToString() == "1" || userId.ToString() == "6")
+                <ul class="nav navbar-nav" style="width: 80%">
+                    @if (currentUserID != 0)
+                    {
+                        <li>@Html.ActionLink("Write a Review", "Create", "Rating")</li>
+                    }
+
+                    @if (currentUserID != 0 && isCurrentUserManager == true)
                     {
                         <li>@Html.ActionLink("Movies", "Index", "Movie")</li>
                         <li>@Html.ActionLink("Users", "Index", "User")</li>
                         <li>@Html.ActionLink("Ratings", "Index", "Rating")</li>
                     }
-                    @if (userId.ToString() == "0" )
+
+                    <li>
+                        <form asp-controller="Home" asp-action="Index">
+                            <div class="col-sm-10" style="padding: 3%">
+                                <input class="form-control" type="text" name="search">
+                            </div>
+                            <div class="col-sm-2" style="padding: 3%">
+                                <button class="btn btn-primary">Search</button>
+                            </div>
+                        </form>
+                    </li>
+
+                    @if (currentUserID == 0)
                     {
-                        <li>@Html.ActionLink("LogIn", "LogIn", "Home")</li>
+                        <li class="pull-right">@Html.ActionLink("LogIn", "LogIn", "Home")</li>
                     }
                     else
                     {
-                        <li>@Html.ActionLink("Logout", "LogIn", "Home")</li>
+                        <li class="pull-right">@Html.ActionLink("Logout", "Logout", "Home")</li>
                     }
+
+                    <li class="pull-right">@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li class="pull-right">@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
             </div>
         </div>

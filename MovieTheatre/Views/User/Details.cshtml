@@ -1,38 +1,30 @@
 ﻿@model MovieTheatre.Models.User
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = @Model.Username;
+    var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
 }
+<header>
+    <h2 class="header-text">
+        @ViewBag.Title
+        <small> - @Model.Email</small>
+    </h2>
+</header>
 
-<h2>Details</h2>
+<hr />
 
-<div>
-    <h4>User</h4>
+<content>
+    <h3>Reviews</h3>
+
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Username)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Username)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+</content>
+
+@if (isCurrentUserManager)
+{
+    <p>
+        @Html.ActionLink("Edit Review", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("See all Reviews", "Index")
+    </p>
+}

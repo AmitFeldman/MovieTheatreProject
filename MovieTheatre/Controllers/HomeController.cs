@@ -25,16 +25,24 @@ namespace MovieTheatre.Controllers
         {
             try
             {
-                var userid = Session["CurrentUser"];
-                if (userid == null)
-                    Session.Add("CurrentUser", 0);
+                var currentUserID = Session["CurrentUserID"];
+                var isCurrentUserManager = Session["isCurrentUserManager"];
+                
+                if (currentUserID == null || isCurrentUserManager == null)
+                {
+                    Session.Add("CurrentUserID", 0);
+                    Session.Add("isCurrentUserManager", false);
+                }
             }
-            catch { Session.Add("CurrentUser", 0); }
+            catch {
+                Session.Add("CurrentUserID", 0);
+                Session.Add("isCurrentUserManager", false);
+            }
 
             // TODO: Add logic for suggested movies and latest reviews
             HomeModel homeModel = new HomeModel();
             homeModel.suggestedMovies = db.Movies.Take(5).ToList();
-            homeModel.latestReviews = db.Ratings.OrderByDescending(item => item.ReviewDate).Take(3).ToList();
+            homeModel.latestReviews = db.Ratings.OrderByDescending(review => review.ReviewDate).Take(3).ToList();
 
             return View(homeModel);
         }
@@ -55,7 +63,7 @@ namespace MovieTheatre.Controllers
 
         public ActionResult LogIn(string button)
         {
-            Session.Add("CurrentUser", 0);
+            // Session.Add("CurrentUser", 0);
             ViewBag.Message = "Your login page.";
 
             if (button == "Login")
@@ -74,14 +82,18 @@ namespace MovieTheatre.Controllers
             if (u.Email != null && u.Password != null)
             {
                 //var v = db.User.Where(a = > a.Email.Equals(u.Email) && a.Password.Equals(u.Password)).FirstOrDefault();
-                var v =
+                var currentUser =
                 (from user in db.Users
                  where user.Email.Equals(u.Email) && user.Password.Equals(u.Password)
-                 select user.ID).FirstOrDefault();
-                if (v != 0)
+                 select user).FirstOrDefault();
+
+                if (currentUser.ID != 0)
                 {
-                    Session.Remove("CurrentUser");
-                    Session.Add("CurrentUser", v.ToString());
+                    Session.Remove("CurrentUserID");
+                    Session.Remove("isCurrentUserManager");
+
+                    Session.Add("CurrentUserID", currentUser.ID);
+                    Session.Add("isCurrentUserManager", currentUser.isManager);
                     return RedirectToAction("Index");
                 }
                 else
@@ -95,7 +107,11 @@ namespace MovieTheatre.Controllers
 
         public ActionResult Logout()
         {
-            Session.Remove("CurrentUser");
+            Session.Remove("CurrentUserID");
+            Session.Remove("isCurrentUserManager");
+
+            Session.Add("CurrentUserID", 0);
+            Session.Add("isCurrentUserManager", false);
             return Redirect("LogIn");
         }
 
