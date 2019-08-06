@@ -16,10 +16,21 @@
 }
 
 <form asp-controller="Movie" asp-action="Index">
-    <div class="input-group" style="display: block;">
-        <input type="text" name="movieSearch" class="form-control">
+    <div class="input-group">
+        <label class="input-group-addon">Name</label>
+        <input type="text" name="movieName" class="form-control">
+
+        <label class="input-group-addon">Year</label>
+        <input type="text" name="year" class="form-control">
+
+        <label class="input-group-addon">Director</label>
+        <input type="text" name="director" class="form-control">
+
+        <label class="input-group-addon">Genre</label>
+        <input type="text" name="genre" class="form-control">
+
         <div class="input-group-btn">
-            <button type="submit" class="btn btn-primary">Filter By Movie Name</button>
+            <button type="submit" class="btn btn-primary">Filter</button>
         </div>
     </div>
 </form>
@@ -29,7 +40,7 @@
     {
         <div class="col-sm-4">
             <a href="/Movie/Details/@movie.ID">
-                <img class="review-img" src="@movie.Poster" style="width: 90%; margin: 5%; max-height: 465px"/>
+                <img class="review-img" src="@movie.Poster" style="width: 90%; margin: 5%; height: 465px"/>
             </a>
         </div>
     }

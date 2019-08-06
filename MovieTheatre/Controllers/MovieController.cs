@@ -26,14 +26,13 @@ namespace MovieTheatre.Controllers
         }
 
         // GET: Movie
-        public ActionResult Index(string movieSearch)
+        public ActionResult Index(string movieName = "", string year = "", string director = "", string genre = "")
         {
-            var movies = from m in db.Movies select m;
-
-            if (!String.IsNullOrEmpty(movieSearch))
-            {
-                movies = movies.Where(s => s.Name.Contains(movieSearch));
-            }
+            var movies = db.Movies
+                   .Where(movie => movie.Name.Contains(movieName))
+                   .Where(movie => movie.Year.Contains(year))
+                   .Where(movie => movie.Director.Contains(director))
+                   .Where(movie => movie.Genre.Contains(genre));
 
             GetMovieDetails(movies);
 
@@ -83,7 +82,7 @@ namespace MovieTheatre.Controllers
                         item.Director = data["Director"].Value<string>();
                         item.Year = data["Year"].Value<string>();
                         genre = data["Genre"].Value<string>();
-                        item.Genre = genre.Contains(",") ? genre.Substring(0, genre.IndexOf(',')) 
+                        item.Genre = genre.Contains(",") ? genre.Substring(0, genre.IndexOf(','))
                                                          : genre;
                     }
                 }
@@ -150,11 +149,11 @@ namespace MovieTheatre.Controllers
         // GET: Movie/Create
         public ActionResult Create()
         {
-            var isCurrentUserManager = (Boolean) Session["isCurrentUserManager"];
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
 
             if (isCurrentUserManager == false)
             {
-                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!"});
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
             }
 
             return View();
