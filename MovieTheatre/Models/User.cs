@@ -16,5 +16,6 @@ namespace MovieTheatre.Models
         [Required(ErrorMessage = "Please provide password", AllowEmptyStrings = false)]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Password)]
         public string Password { get; set; }
+        public bool isManager { get; set; }
     }
 }

@@ -1,0 +1,18 @@
+﻿blockquote {
+    font: 1.2em;
+    font-weight: 700;
+    margin: 0;
+}
+
+.team-img {
+    border-radius: 50%;
+    width: 100%;
+}
+
+.about-container {
+    max-width: 800px;
+    margin: 0 auto;
+    column-width: 14em;
+    column-gap: 2em;
+    column-rule: 1px solid #ccc;
+}

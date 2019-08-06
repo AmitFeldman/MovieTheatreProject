@@ -1,81 +1,41 @@
 ﻿@model IEnumerable<MovieTheatre.Models.Movie>
 
 @{
-    ViewBag.Title = "Manager Page";
+    ViewBag.Title = "Movies";
+    var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
 }
 
-@*<script src="//cdnjs.cloudflare.com/ajax/libs/d3/4.7.2/d3.min.js"></script>
-<script src="Scripts/d3pie.min.js"></script>*@
+<h2 class="header-text">@ViewBag.Title</h2>
 
-<h2>@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<form asp-controller="Movie" asp-action="Index">
+@if (isCurrentUserManager)
+{
     <p>
-        Title: <input type="text" name="movieSearch">
-        <input type="submit" value="Filter" />
+        @Html.ActionLink("Add Movie", "Create")
     </p>
-</form>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Year)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Director)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Genre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Poster)
-        </th>
-        <th></th>
-    </tr>
+}
 
-    @foreach (var item in Model)
+<form asp-controller="Movie" asp-action="Index">
+    <div class="input-group" style="display: block;">
+        <input type="text" name="movieSearch" class="form-control">
+        <div class="input-group-btn">
+            <button type="submit" class="btn btn-primary">Filter By Movie Name</button>
+        </div>
+    </div>
+</form>
+
+<content class="row">
+    @foreach (var movie in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Year)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Director)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <img src=@Html.DisplayFor(modelItem => item.Poster) height="250px" width="250px">
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                <!-- Your share button code -->
-                <div class="fb-share-button"
-                     data-href=@Html.DisplayFor(modelItem => item.Poster)
-                     data-layout="button"
-                     data-size="large">
-                </div>
-            </td>
-        </tr>
+        <div class="col-sm-4">
+            <a href="/Movie/Details/@movie.ID">
+                <img class="review-img" src="@movie.Poster" style="width: 90%; margin: 5%; max-height: 465px"/>
+            </a>
+        </div>
     }
-</table>
+</content>
+
+<hr />
 
 <div>
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
@@ -98,9 +58,9 @@
             })
         });
 
-          google.charts.setOnLoadCallback(() => {
+        google.charts.setOnLoadCallback(() => {
             drawDirectorsChart();
-          });
+        });
 
         // Draw the chart and set the chart values
         function drawGenreChart(genres) {
@@ -147,37 +107,16 @@
                     text: "Highest rated movies"
                 },
                 axisY: {
-                    includeZero: false                    
+                    includeZero: false
                 },
                 data: [{
                     type: "line",
                     dataPoints:
                     @Html.Raw(Json.Encode(@ViewBag.movieRating))
-                    //    [
-                    //    { y: 5, indexLabel: "Finding Nemo", markerColor: "red", markerType: "triangle" },
-                    //    { y: 4.14, indexLabel: "Harry Potter" },
-                    //    { y: 3.2, indexLabel: "Terminator" },
-                    //    { y: 3.1, indexLabel: "Aladin" },
-                    //    { y: 2.99, indexLabel: "Jumangi" },
-                    //    { y: 2, indexLabel: "Holmes and Watson", markerColor: "DarkSlateGrey", markerType: "cross" }
-                    //]
                 }]
             });
             chart.render();
         }
     </script>
-    @*<div id="pieChart"></div>*@
-
-    @*<script>
-        var pie = new d3pie("pieChart", {
-            "header": { "title": { "text": "Genres", "fontSize": 22, "font": "verdana" }, "subtitle": { "text": "The number of  movies from every genre", "color": "#999999", "fontSize": 10, "font": "verdana" }, "titleSubtitlePadding": 12 }, "footer": { "text": ".", "color": "#999999", "fontSize": 11, "font": "open sans", "location": "bottom-center" }, "size": { "canvasHeight": 400, "canvasWidth": 590, "pieOuterRadius": "88%" },
-            "data": {
-                "content":
-                @Html.Raw(Json.Encode(@ViewBag.genres))
-                   },
-            "labels": { "outer": { "pieDistance": 32 }, "inner": { "format": "value" }, "mainLabel": { "font": "verdana" }, "percentage": { "color": "#e1e1e1", "font": "verdana", "decimalPlaces": 0 }, "value": { "color": "#e1e1e1", "font": "verdana" }, "lines": { "enabled": true, "color": "#cccccc" }, "truncation": { "enabled": true } }, "effects": { "pullOutSegmentOnClick": { "effect": "linear", "speed": 400, "size": 8 } }
-        });
-    </script>*@
-
 
 </div>

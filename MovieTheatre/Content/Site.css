@@ -1,4 +1,33 @@
-﻿body {
+﻿@font-face {
+    font-family: 'ProjectFont';
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/redhattext/v1/RrQXbohi_ic6B3yVSzGBrMxQaKct.woff2) format('woff2');
+}
+
+.header-text {
+    text-shadow: #e0e0e0 2px 2px 0;
+}
+
+.good-movie {
+    font-style: italic;
+    font-weight: bold;
+    color: forestgreen;
+}
+
+.avg-movie {
+    font-style: italic;
+    font-weight: bold;
+    color: gold;
+}
+
+.bad-movie {
+    font-style: italic;
+    font-weight: bold;
+    color: red;
+}
+
+body {
+    font-family: ProjectFont, sans-serif;
     padding-top: 50px;
     padding-bottom: 20px;
 }

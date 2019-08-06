@@ -11,17 +11,31 @@
 
 <content class="container">
     <div class="row">
-        <div class="col-sm-8">
-            <h1>Welcome to @(ViewBag.Name)</h1>
+        <div class="col-sm-7">
+            <h1 class="header-text">Welcome to @(ViewBag.Name)</h1>
 
             <div class="reviews-container">
                 <h3>Latest Reviews</h3>
                 @foreach (var review in Model.latestReviews)
                 {
                     <hr />
-                    <h4>@review.UserID - @review.Stars / 10</h4>
-                    <h5 class="review-text">@review.Review</h5>
-                    <a class="btn btn-outline-primary" href="#" role="button">Read full review...</a>
+                    <section class="row">
+                        <div class="col-sm-10">
+                            <h4>
+                                @review.User.Username -
+                                <small class="@Html.Raw((review.Stars == 5) ? "avg-movie": (review.Stars > 5) ? "good-movie" : "bad-movie")">
+                                    @review.Stars / 10
+                                </small>
+                            </h4>
+                            <h5 class="review-text">@review.Review</h5>
+                            <a class="btn btn-outline-primary" href="/User/Details/@review.UserID" role="button">Read more from this user. . .</a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="/Movie/Details/@review.MovieID">
+                                <img class="review-img" src="@review.Movie.Poster" />
+                            </a>
+                        </div>
+                    </section>
                 }
             </div>
         </div>
@@ -41,7 +55,7 @@
                         {
                             <div class="item carousel-item carousel-slide-wrapper @(i == 0 ? "active" : "")">
                                 <a href="/Movie/Details/@(Model.suggestedMovies[i].ID)" class="carousel-slide-wrapper">
-                                    <img class="d-block w-100 carousel-slide-wrapper" src=@Html.DisplayFor(modelItem => Model.suggestedMovies[i].Poster)>
+                                    <img class="carousel-slide-wrapper" src=@Html.DisplayFor(modelItem => Model.suggestedMovies[i].Poster)>
                                 </a>
                             </div>
                         }
