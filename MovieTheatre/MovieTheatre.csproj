@@ -140,7 +140,7 @@
       <DependentUpon>201908061115260_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\GenreCount.cs" />
+    <Compile Include="Models\ChartData.cs" />
     <Compile Include="Models\GenreListItem.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Rating.cs" />

@@ -49,10 +49,26 @@ namespace MovieTheatre.Controllers
             var genres = (from m in db.Movies
                           group m by m.Genre into g
                           orderby g.Count() descending
-                          select new GenreCount { genre = g.Key, amount = g.Count() });
+                          select new ChartData { label = g.Key, amount = g.Count() });
 
             var genreList = genres.ToList();
             result = this.Json(genreList, JsonRequestBehavior.AllowGet);
+
+            return result;
+        }
+
+        public ActionResult GetDirectorData()
+        {
+            JsonResult result = new JsonResult();
+
+            // Get count of each genre
+            var directors = (from m in db.Movies
+                          group m by m.Director into g
+                          orderby g.Count() descending
+                          select new ChartData { label = g.Key, amount = g.Count() });
+
+            var directorList = directors.ToList();
+            result = this.Json(directorList, JsonRequestBehavior.AllowGet);
 
             return result;
         }
