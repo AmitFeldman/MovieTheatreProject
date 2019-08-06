@@ -32,56 +32,58 @@
         </div>
 
         <div class="col-sm-8">
-            <div id="trailer">
-                <iframe id="existing-iframe-example"
-                        width="640" height="360"
-                        src=@Model.movie.Trailer
-                        frameborder="0"
-                        style="border: solid 4px #37474F"></iframe>
+            @if(Model.movie.Trailer != null){
+                <div id="trailer">
+                    <iframe id="existing-iframe-example"
+                            width="640" height="360"
+                            src=@Model.movie.Trailer
+                            frameborder="0"
+                            style="border: solid 4px #37474F"></iframe>
 
-                <script type="text/javascript">
-                    var tag = document.createElement('script');
-                    tag.id = 'iframe-demo';
-                    tag.src = 'https://www.youtube.com/iframe_api';
-                    var firstScriptTag = document.getElementsByTagName('script')[0];
-                    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                    <script type="text/javascript">
+                        var tag = document.createElement('script');
+                        tag.id = 'iframe-demo';
+                        tag.src = 'https://www.youtube.com/iframe_api';
+                        var firstScriptTag = document.getElementsByTagName('script')[0];
+                        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-                    var player;
-                    function onYouTubeIframeAPIReady() {
-                        player = new YT.Player('existing-iframe-example', {
-                            events: {
-                                'onReady': onPlayerReady,
-                                'onStateChange': onPlayerStateChange
+                        var player;
+                        function onYouTubeIframeAPIReady() {
+                            player = new YT.Player('existing-iframe-example', {
+                                events: {
+                                    'onReady': onPlayerReady,
+                                    'onStateChange': onPlayerStateChange
+                                }
+                            });
+                        }
+                        function onPlayerReady(event) {
+                            document.getElementById('existing-iframe-example').style.borderColor = '#FF6D00';
+                        }
+                        function changeBorderColor(playerStatus) {
+                            var color;
+                            if (playerStatus == -1) {
+                                color = "#37474F"; // unstarted = gray
+                            } else if (playerStatus == 0) {
+                                color = "#FFFF00"; // ended = yellow
+                            } else if (playerStatus == 1) {
+                                color = "#33691E"; // playing = green
+                            } else if (playerStatus == 2) {
+                                color = "#DD2C00"; // paused = red
+                            } else if (playerStatus == 3) {
+                                color = "#AA00FF"; // buffering = purple
+                            } else if (playerStatus == 5) {
+                                color = "#FF6DOO"; // video cued = orange
                             }
-                        });
-                    }
-                    function onPlayerReady(event) {
-                        document.getElementById('existing-iframe-example').style.borderColor = '#FF6D00';
-                    }
-                    function changeBorderColor(playerStatus) {
-                        var color;
-                        if (playerStatus == -1) {
-                            color = "#37474F"; // unstarted = gray
-                        } else if (playerStatus == 0) {
-                            color = "#FFFF00"; // ended = yellow
-                        } else if (playerStatus == 1) {
-                            color = "#33691E"; // playing = green
-                        } else if (playerStatus == 2) {
-                            color = "#DD2C00"; // paused = red
-                        } else if (playerStatus == 3) {
-                            color = "#AA00FF"; // buffering = purple
-                        } else if (playerStatus == 5) {
-                            color = "#FF6DOO"; // video cued = orange
+                            if (color) {
+                                document.getElementById('existing-iframe-example').style.borderColor = color;
+                            }
                         }
-                        if (color) {
-                            document.getElementById('existing-iframe-example').style.borderColor = color;
+                        function onPlayerStateChange(event) {
+                            changeBorderColor(event.data);
                         }
-                    }
-                    function onPlayerStateChange(event) {
-                        changeBorderColor(event.data);
-                    }
-                </script>
-            </div>
+                    </script>
+                </div>
+            }
 
             <div class="row">
                 <div class="col-sm-1">
@@ -117,7 +119,7 @@
             {
                 <hr />
 
-                <a href="/User/Details/@review.UserID" >
+                <a href="/User/Details/@review.UserID">
                     <h4>
                         @review.User.Username -
                         <small class="@Html.Raw((review.Stars == 5) ? "avg-movie" : (review.Stars > 5) ? "good-movie" : "bad-movie")">
