@@ -7,13 +7,13 @@ namespace MovieTheatre.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class Addedpassword : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Addedpassword));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201907291927242_Added password"; }
+            get { return "201908061115260_Initial"; }
         }
         
         string IMigrationMetadata.Source

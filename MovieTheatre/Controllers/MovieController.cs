@@ -19,6 +19,12 @@ namespace MovieTheatre.Controllers
         private Context db = new Context();
         private Random rnd = new Random();
 
+        public class MovieDetailsModel
+        {
+            public Movie movie { get; set; }
+            public List<MovieTheatre.Models.Rating> movieReviews { get; set; }
+        }
+
         // GET: Movie
         public ActionResult Index(string movieSearch)
         {
@@ -89,7 +95,7 @@ namespace MovieTheatre.Controllers
         public void HigherRankedMovies()
         {
             var movies = (from m in db.Movies
-                          join r in db.Rating on m.ID equals r.MovieID
+                          join r in db.Ratings on m.ID equals r.MovieID
                           group r by m.Name into g
                           orderby g.Average(p => p.Stars) descending
                           select new { indexLabel = g.Key, y = g.Average(p => p.Stars) }).Take(10);
@@ -109,10 +115,16 @@ namespace MovieTheatre.Controllers
             {
                 return HttpNotFound();
             }
-            return View(movie);
+
+            MovieDetailsModel detailsModel = new MovieDetailsModel();
+
+            detailsModel.movie = movie;
+            detailsModel.movieReviews = db.Ratings.Where(review => review.MovieID == movie.ID).ToList();
+
+            return View(detailsModel);
         }
 
-        public ActionResult CallWebService(Movie formMovie)
+        public ActionResult AutocompleteMovieData(string movieName)
         {
             var client = new WebClient();
             Movie movie = new Movie();
@@ -138,6 +150,13 @@ namespace MovieTheatre.Controllers
         // GET: Movie/Create
         public ActionResult Create()
         {
+            var isCurrentUserManager = (Boolean) Session["isCurrentUserManager"];
+
+            if (isCurrentUserManager == false)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!"});
+            }
+
             return View();
         }
 
@@ -148,6 +167,13 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Name,Genre,Description,Year,Director,Poster,Trailer")] Movie movie)
         {
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+
+            if (isCurrentUserManager == false)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            }
+
             if (ModelState.IsValid)
             {
                 db.Movies.Add(movie);
@@ -161,6 +187,13 @@ namespace MovieTheatre.Controllers
         // GET: Movie/Edit/5
         public ActionResult Edit(int? id)
         {
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+
+            if (isCurrentUserManager == false)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -180,6 +213,13 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name,Genre,Description,Year,Director,Poster,Trailer")] Movie movie)
         {
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+
+            if (isCurrentUserManager == false)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(movie).State = EntityState.Modified;
@@ -192,6 +232,13 @@ namespace MovieTheatre.Controllers
         // GET: Movie/Delete/5
         public ActionResult Delete(int? id)
         {
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+
+            if (isCurrentUserManager == false)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -209,9 +256,21 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+
+            if (isCurrentUserManager == false)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            }
+
             Movie movie = db.Movies.Find(id);
             db.Movies.Remove(movie);
+
+            List<Rating> ratings = db.Ratings.Where((review) => review.MovieID == id).ToList();
+            ratings.ForEach((rating) => db.Ratings.Remove(rating));
+
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

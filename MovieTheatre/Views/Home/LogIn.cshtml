@@ -1,10 +1,12 @@
 ﻿@model MovieTheatre.Models.User
 @{
-    ViewData["Title"] = "LogIn";
+    ViewData["Title"] = "Log In";
 }
 
 <h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
+
+<br />
+
 @using (Html.BeginForm("LogIn", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken() // this is for prevent CSRF attack
@@ -20,9 +22,11 @@
             @Html.PasswordFor(a => a.Password, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
         </div>
-        <div class="col-md-10">
-            <input type="submit" value="Login" name='button' />
-            @*<input type="button" onclick="Register()" value="Register" name='button' />*@
+
+        <br />
+
+        <div class="col-md-10" style="margin-top: 5px">
+            <input type="submit" class="btn btn-primary" value="Log In" name='button' />
             @Html.ActionLink("Register", "Create", "User")
         </div>
         <div class="col-md-10">

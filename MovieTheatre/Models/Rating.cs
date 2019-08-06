@@ -14,6 +14,7 @@ namespace MovieTheatre.Models
         public int UserID { get; set; }
         [ForeignKey("Movie")]
         public int MovieID { get; set; }
+        [DataType(DataType.MultilineText)]
         public string Review { get; set; }
         [Range(1, 10)]
         public int Stars { get; set; }
