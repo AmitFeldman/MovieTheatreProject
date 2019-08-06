@@ -130,36 +130,13 @@
     <Compile Include="Controllers\RatingController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DAL\TheatreContext.cs" />
+    <Compile Include="DAL\TheatreInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201906182012340_InitialCreate.cs" />
-    <Compile Include="Migrations\201906182012340_InitialCreate.Designer.cs">
-      <DependentUpon>201906182012340_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201906192052296_MyNewTableAdded.cs" />
-    <Compile Include="Migrations\201906192052296_MyNewTableAdded.Designer.cs">
-      <DependentUpon>201906192052296_MyNewTableAdded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907110918535_MyNewTableAdded1.cs" />
-    <Compile Include="Migrations\201907110918535_MyNewTableAdded1.Designer.cs">
-      <DependentUpon>201907110918535_MyNewTableAdded1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907182346190_AddPosterAndTrailer.cs" />
-    <Compile Include="Migrations\201907182346190_AddPosterAndTrailer.Designer.cs">
-      <DependentUpon>201907182346190_AddPosterAndTrailer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907191245340_Added_director_and_year.cs" />
-    <Compile Include="Migrations\201907191245340_Added_director_and_year.Designer.cs">
-      <DependentUpon>201907191245340_Added_director_and_year.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907232041273_SamuelPullMigration.cs" />
-    <Compile Include="Migrations\201907232041273_SamuelPullMigration.Designer.cs">
-      <DependentUpon>201907232041273_SamuelPullMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201907291927242_Added password.cs" />
-    <Compile Include="Migrations\201907291927242_Added password.Designer.cs">
-      <DependentUpon>201907291927242_Added password.cs</DependentUpon>
+    <Compile Include="Migrations\201908061115260_Initial.cs" />
+    <Compile Include="Migrations\201908061115260_Initial.Designer.cs">
+      <DependentUpon>201908061115260_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\GenreCount.cs" />
@@ -254,26 +231,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201906182012340_InitialCreate.resx">
-      <DependentUpon>201906182012340_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906192052296_MyNewTableAdded.resx">
-      <DependentUpon>201906192052296_MyNewTableAdded.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907110918535_MyNewTableAdded1.resx">
-      <DependentUpon>201907110918535_MyNewTableAdded1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907182346190_AddPosterAndTrailer.resx">
-      <DependentUpon>201907182346190_AddPosterAndTrailer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907191245340_Added_director_and_year.resx">
-      <DependentUpon>201907191245340_Added_director_and_year.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907232041273_SamuelPullMigration.resx">
-      <DependentUpon>201907232041273_SamuelPullMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907291927242_Added password.resx">
-      <DependentUpon>201907291927242_Added password.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201908061115260_Initial.resx">
+      <DependentUpon>201908061115260_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

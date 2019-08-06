@@ -18,7 +18,7 @@ namespace MovieTheatre.Controllers
         // GET: Rating
         public ActionResult Index(int userId = 0, int movieId = 0, int stars = 0)
         {
-            var ratings = db.Rating.Where(s => s.UserID  == userId  || userId  == 0)
+            var ratings = db.Ratings.Where(s => s.UserID  == userId  || userId  == 0)
                                    .Where(s => s.MovieID == movieId || movieId == 0)
                                    .Where(s => s.Stars   == stars   || stars   == 0);
             return View(ratings.ToList());
@@ -31,7 +31,7 @@ namespace MovieTheatre.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Rating rating = db.Rating.Find(id);
+            Rating rating = db.Ratings.Find(id);
             if (rating == null)
             {
                 return HttpNotFound();
@@ -54,7 +54,7 @@ namespace MovieTheatre.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Rating.Add(rating);
+                db.Ratings.Add(rating);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -69,7 +69,7 @@ namespace MovieTheatre.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Rating rating = db.Rating.Find(id);
+            Rating rating = db.Ratings.Find(id);
             if (rating == null)
             {
                 return HttpNotFound();
@@ -100,7 +100,7 @@ namespace MovieTheatre.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Rating rating = db.Rating.Find(id);
+            Rating rating = db.Ratings.Find(id);
             if (rating == null)
             {
                 return HttpNotFound();
@@ -113,8 +113,8 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Rating rating = db.Rating.Find(id);
-            db.Rating.Remove(rating);
+            Rating rating = db.Ratings.Find(id);
+            db.Ratings.Remove(rating);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
