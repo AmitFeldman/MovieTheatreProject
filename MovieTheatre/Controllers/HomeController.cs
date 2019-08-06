@@ -63,14 +63,6 @@ namespace MovieTheatre.Controllers
 
         public ActionResult LogIn(string button)
         {
-            // Session.Add("CurrentUser", 0);
-            ViewBag.Message = "Your login page.";
-
-            if (button == "Login")
-            {
-                //db.User.Where(s => s.Name.Contains(userName));
-            }
-
             return View();
         }
 
@@ -78,16 +70,15 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogIn([Bind(Include = "Email,Password")]User u)
         {
-
             if (u.Email != null && u.Password != null)
             {
-                //var v = db.User.Where(a = > a.Email.Equals(u.Email) && a.Password.Equals(u.Password)).FirstOrDefault();
                 var currentUser =
                 (from user in db.Users
                  where user.Email.Equals(u.Email) && user.Password.Equals(u.Password)
                  select user).FirstOrDefault();
+                db.Users.Where((user) => user.Email.Equals(u.Email) && user.Password.Equals(u.Password)).FirstOrDefault();
 
-                if (currentUser.ID != 0)
+                if (currentUser != null && currentUser.ID != 0)
                 {
                     Session.Remove("CurrentUserID");
                     Session.Remove("isCurrentUserManager");

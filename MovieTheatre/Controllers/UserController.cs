@@ -15,6 +15,12 @@ namespace MovieTheatre.Controllers
     {
         private Context db = new Context();
 
+        public class UserDetailsModel
+        {
+            public User user { get; set; }
+            public List<MovieTheatre.Models.Rating> userReviews { get; set; }
+        }
+
         // GET: User
         public ActionResult Index(string userName)
         {
@@ -48,7 +54,12 @@ namespace MovieTheatre.Controllers
             {
                 return HttpNotFound();
             }
-            return View(user);
+
+            UserDetailsModel detailsModel = new UserDetailsModel();
+            detailsModel.user = user;
+            detailsModel.userReviews = db.Ratings.Where(review => review.UserID == user.ID).ToList();
+
+            return View(detailsModel);
         }
 
         // GET: User/Create
@@ -174,6 +185,10 @@ namespace MovieTheatre.Controllers
 
             User user = db.Users.Find(id);
             db.Users.Remove(user);
+
+            List<Rating> ratings = db.Ratings.Where((review) => review.UserID == id).ToList();
+            ratings.ForEach((rating) => db.Ratings.Remove(rating));
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -26,7 +26,8 @@
     {
         currentUserID = (int)Session["CurrentUserID"];
         isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
-    } catch {}
+    }
+    catch { }
 }
 
 <body>
@@ -42,36 +43,23 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav" style="width: 80%">
-                    @if (currentUserID != 0)
-                    {
-                        <li>@Html.ActionLink("Write a Review", "Create", "Rating")</li>
-                    }
+
+                    <li>@Html.ActionLink("Write a Review", "Create", "Rating")</li>
+                    <li>@Html.ActionLink("Movies", "Index", "Movie")</li>
 
                     @if (currentUserID != 0 && isCurrentUserManager == true)
                     {
-                        <li>@Html.ActionLink("Movies", "Index", "Movie")</li>
                         <li>@Html.ActionLink("Users", "Index", "User")</li>
                         <li>@Html.ActionLink("Ratings", "Index", "Rating")</li>
                     }
 
-                    <li>
-                        <form asp-controller="Home" asp-action="Index">
-                            <div class="col-sm-10" style="padding: 3%">
-                                <input class="form-control" type="text" name="search">
-                            </div>
-                            <div class="col-sm-2" style="padding: 3%">
-                                <button class="btn btn-primary">Search</button>
-                            </div>
-                        </form>
-                    </li>
-
                     @if (currentUserID == 0)
                     {
-                        <li class="pull-right">@Html.ActionLink("LogIn", "LogIn", "Home")</li>
+                        <li class="pull-right">@Html.ActionLink("Log In", "LogIn", "Home")</li>
                     }
                     else
                     {
-                        <li class="pull-right">@Html.ActionLink("Logout", "Logout", "Home")</li>
+                        <li class="pull-right">@Html.ActionLink("Log Out", "Logout", "Home")</li>
                     }
 
                     <li class="pull-right">@Html.ActionLink("Contact", "Contact", "Home")</li>
