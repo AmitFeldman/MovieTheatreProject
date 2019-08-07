@@ -14,6 +14,9 @@ namespace MovieTheatre.Controllers
     {
         private Context db = new Context();
         public string[] Posters { get; set; }
+        public int numberOfSuggested = 0;
+        const int minNumOfMovies = 3,
+                  maxNumOfMovies = 5;
 
         public class HomeModel
         {
@@ -27,26 +30,95 @@ namespace MovieTheatre.Controllers
             {
                 var currentUserID = Session["CurrentUserID"];
                 var isCurrentUserManager = Session["isCurrentUserManager"];
-                
+
                 if (currentUserID == null || isCurrentUserManager == null)
                 {
                     Session.Add("CurrentUserID", 0);
                     Session.Add("isCurrentUserManager", false);
                 }
             }
-            catch {
+            catch
+            {
                 Session.Add("CurrentUserID", 0);
                 Session.Add("isCurrentUserManager", false);
             }
 
-            // TODO: Add logic for suggested movies and latest reviews
             HomeModel homeModel = new HomeModel();
-            homeModel.suggestedMovies = db.Movies.Take(5).ToList();
+            homeModel.suggestedMovies = SuggestedMovies();
             homeModel.latestReviews = db.Ratings.OrderByDescending(review => review.ReviewDate).Take(3).ToList();
 
             return View(homeModel);
         }
 
+        // Get the suggestedMovies
+        public List<Movie> SuggestedMovies()
+        {
+            int currentUserID = (int)Session["CurrentUserID"];
+            List<Movie> suggestedMovies = new List<Movie>();
+
+            // Get the favorites genres by average rating at descending level
+            var genres = (from m in db.Movies
+                          join r in db.Ratings on m.ID equals r.MovieID
+                          where r.UserID == currentUserID
+                          group r by m.Genre into g
+                          orderby g.Average(p => p.Stars) descending
+                          select new { genre = g.Key }).ToList();
+
+            // Get all the movies user already rated
+            var movies = (from r in db.Ratings
+                          join m in db.Movies on r.MovieID equals m.ID
+                          where r.UserID == currentUserID
+                          select m).ToList();
+
+            for (var i = 0; i < genres.Count() && numberOfSuggested < minNumOfMovies; i++)
+            {
+                GetMoviesFromGenre(genres[i].genre, movies, suggestedMovies);
+            }
+
+            // If not found enough movies add random genre's movies
+            if (numberOfSuggested < minNumOfMovies)
+            {
+                var randGenres = (from m in db.Movies
+                                  join r in db.Ratings on m.ID equals r.MovieID into rm
+                                  from genre in rm.DefaultIfEmpty()
+                                  select new { genre = m.Genre, rating = rm.Count() });
+
+                // Remove rated genres
+                randGenres = randGenres.Where(p => p.rating == 0);
+
+                // Find the movies
+                for (var i = 0; i < randGenres.ToArray().Length && numberOfSuggested < minNumOfMovies; i++)
+                {
+                    GetMoviesFromGenre(randGenres.ToArray()[i].genre, new List<Movie>(), suggestedMovies);
+                }
+            }
+            return suggestedMovies;
+        }
+
+        // Get the movies he didn't rate from genre
+        public void GetMoviesFromGenre(string genre, List<Movie> ratedMovies, List<Movie> returnedList)
+        {
+            // Get all the movies from genre
+            var suggestedMovies = (from m in db.Movies
+                                   where m.Genre.Equals(genre)
+                                   select m).ToList();
+
+            // Remove the movies he already rated
+            foreach (Movie movie in ratedMovies)
+            {
+                if (suggestedMovies.Contains(movie))
+                    suggestedMovies.Remove(movie);
+            }
+
+            // Add the rest
+            foreach (Movie movie in suggestedMovies)
+            {
+                if (numberOfSuggested == maxNumOfMovies)
+                    return;
+                numberOfSuggested++;
+                returnedList.Add(movie);
+            }
+        }
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -105,13 +177,5 @@ namespace MovieTheatre.Controllers
             Session.Add("isCurrentUserManager", false);
             return Redirect("LogIn");
         }
-
-        /*public ActionResult Register()
-        {
-            Session.Remove("CurrentUser");
-            Session.Add("CurrentUser",0);
-            //return Redirect("../User/Create");
-            return RedirectToAction("../User/Create");
-        }*/
     }
 }
