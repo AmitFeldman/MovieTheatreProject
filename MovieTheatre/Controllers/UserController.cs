@@ -57,7 +57,10 @@ namespace MovieTheatre.Controllers
 
             UserDetailsModel detailsModel = new UserDetailsModel();
             detailsModel.user = user;
-            detailsModel.userReviews = db.Ratings.Where(review => review.UserID == user.ID).ToList();
+            detailsModel.userReviews = db.Ratings
+                .Where(review => review.UserID == user.ID)
+                .OrderByDescending(review => review.ReviewDate)
+                .ToList();
 
             return View(detailsModel);
         }

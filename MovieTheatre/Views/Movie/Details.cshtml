@@ -106,6 +106,10 @@
         </div>
     </div>
 
+    <br />
+
+    <a class="btn btn-primary btn-lg" href="/Rating/Create/@Model.movie.ID">Write a Review</a>
+
     <hr />
 
     @if (Model.movieReviews.Count > 0)
@@ -117,7 +121,7 @@
             {
                 <hr />
 
-                <a href="/User/Details/@review.UserID" >
+                <a href="/User/Details/@review.UserID">
                     <h4>
                         @review.User.Username -
                         <small class="@Html.Raw((review.Stars == 5) ? "avg-movie" : (review.Stars > 5) ? "good-movie" : "bad-movie")">

@@ -5,9 +5,9 @@ using System.Web;
 
 namespace MovieTheatre.Models
 {
-    public class GenreCount
+    public class ChartData
     {
-        public string genre { get; set; }
+        public string label { get; set; }
 
         public int amount { get; set; }
 

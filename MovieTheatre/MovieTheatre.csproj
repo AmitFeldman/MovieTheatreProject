@@ -144,8 +144,9 @@
       <DependentUpon>201908062216124_location.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\LocationPoint.cs" />
     <Compile Include="Models\GenreCount.cs" />
+	<Compile Include="Models\ChartData.cs" />
+	<Compile Include="Models\LocationPoint.cs" />
     <Compile Include="Models\GenreListItem.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Rating.cs" />
@@ -159,8 +160,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\Adir.jpg" />
     <Content Include="Content\Images\Amit.jpg" />
+    <Content Include="Content\Images\freakreviews.mp4" />
     <Content Include="Content\Images\Raz.jpg" />
     <Content Include="Content\Images\Samuel.jpg" />
+    <Content Include="Content\Images\Universal_Intro_4K.mp4" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
