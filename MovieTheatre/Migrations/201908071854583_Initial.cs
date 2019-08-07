@@ -8,6 +8,16 @@ namespace MovieTheatre.Migrations
         public override void Up()
         {
             CreateTable(
+                "dbo.LocationPoint",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        lat = c.Double(nullable: false),
+                        lng = c.Double(nullable: false),
+                    })
+                .PrimaryKey(t => t.ID);
+            
+            CreateTable(
                 "dbo.Movie",
                 c => new
                     {
@@ -50,17 +60,7 @@ namespace MovieTheatre.Migrations
                         isManager = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.ID);
-
-            //CreateTable(
-            //    "dbo.LocationPoint",
-            //    c => new
-            //    {
-            //        ID = c.Int(nullable: false, identity: true),
-            //        lat = c.Double(nullable: false),
-            //        lng = c.Double(nullable: false),
-            //    })
-            //    .PrimaryKey(t => t.ID);
-
+            
         }
         
         public override void Down()
@@ -72,7 +72,7 @@ namespace MovieTheatre.Migrations
             DropTable("dbo.User");
             DropTable("dbo.Rating");
             DropTable("dbo.Movie");
-            //DropTable("dbo.LocationPoint");
+            DropTable("dbo.LocationPoint");
         }
     }
 }

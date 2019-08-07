@@ -43,12 +43,12 @@ namespace MovieTheatre.Controllers
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Error");
             }
             Rating rating = db.Ratings.Find(id);
             if (rating == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Error", new { message = "Review not found!" });
             }
             return View(rating);
         }
@@ -59,7 +59,7 @@ namespace MovieTheatre.Controllers
             Movie movie = db.Movies.Find(id);
             if (movie == null)
             {
-                return RedirectToAction("Index", "Error", new { message = "You shouldn't be here!" });
+                return RedirectToAction("Index", "Error", new { message = "Movie not found!" });
             }
 
             ViewBag.movie = movie;
@@ -120,12 +120,12 @@ namespace MovieTheatre.Controllers
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Error");
             }
             Rating rating = db.Ratings.Find(id);
             if (rating == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Error", new { message = "Review not found!" });
             }
             return View(rating);
         }
@@ -165,12 +165,12 @@ namespace MovieTheatre.Controllers
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Error");
             }
             Rating rating = db.Ratings.Find(id);
             if (rating == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Error", new { message = "Review not found!" });
             }
             return View(rating);
         }

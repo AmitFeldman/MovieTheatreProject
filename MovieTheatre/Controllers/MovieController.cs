@@ -171,12 +171,12 @@ namespace MovieTheatre.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Error");
             }
             Movie movie = db.Movies.Find(id);
             if (movie == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Error", new { message = "Movie not found!" });
             }
 
             MovieDetailsModel detailsModel = new MovieDetailsModel();
@@ -236,12 +236,12 @@ namespace MovieTheatre.Controllers
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Error");
             }
             Movie movie = db.Movies.Find(id);
             if (movie == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Error", new { message = "Movie not found!" });
             }
             return View(movie);
         }
@@ -281,12 +281,12 @@ namespace MovieTheatre.Controllers
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Error");
             }
             Movie movie = db.Movies.Find(id);
             if (movie == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Error", new { message = "Movie not found!" });
             }
             return View(movie);
         }
