@@ -134,7 +134,10 @@ namespace MovieTheatre.Controllers
                                 var genres = data["genres"].ToList();
                                 foreach (var genreType in genres)
                                     if (genreType["id"].ToString() == genreId)
+                                    {
                                         item.Genre = genreType["name"].ToString();
+                                        break;
+                                    }
                             }
                         }
                         catch
