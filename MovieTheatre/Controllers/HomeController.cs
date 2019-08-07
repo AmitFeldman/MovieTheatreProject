@@ -180,5 +180,17 @@ namespace MovieTheatre.Controllers
             Session.Add("isCurrentUserManager", false);
             return Redirect("LogIn");
         }
+
+
+        public ActionResult GetLocationPoints()
+        {
+            JsonResult result = new JsonResult();
+
+            List<LocationPoint> locationPoints = db.LocationPoints.ToList();
+
+            result = this.Json(locationPoints, JsonRequestBehavior.AllowGet);
+
+            return result;
+        }
     }
 }

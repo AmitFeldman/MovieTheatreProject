@@ -47,6 +47,16 @@ namespace MovieTheatre.DAL
             };
             ratings.ForEach(s => DbContext.Ratings.Add(s));
             DbContext.SaveChanges();
+
+            var locPoints = new List<LocationPoint>
+            {
+                new LocationPoint{ID=1, lat=32.0804808, lng=34.7805274},
+                new LocationPoint{ID=2, lat=32.0567, lng=34.7817},
+                new LocationPoint{ID=3, lat=32.1862752, lng=34.8692427},
+                new LocationPoint{ID=4, lat=32.0686867, lng=34.8246812},
+            };
+            locPoints.ForEach(s => DbContext.LocationPoints.Add(s));
+            DbContext.SaveChanges();
         }
     }
 }

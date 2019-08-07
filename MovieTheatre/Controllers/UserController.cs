@@ -68,12 +68,12 @@ namespace MovieTheatre.Controllers
         // GET: User/Create
         public ActionResult Create()
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            //var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
 
-            if (isCurrentUserManager == false)
-            {
-                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
-            }
+            //if (isCurrentUserManager == false)
+            //{
+            //    return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            //}
 
             return View();
         }
@@ -88,10 +88,10 @@ namespace MovieTheatre.Controllers
             var currentUserID = (int)Session["CurrentUserID"];
             var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
 
-            if (isCurrentUserManager == false)
-            {
-                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
-            }
+            //if (isCurrentUserManager == false)
+            //{
+            //    return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
+            //}
 
             if (ModelState.IsValid)
             {
