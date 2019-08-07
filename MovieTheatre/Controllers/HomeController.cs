@@ -19,6 +19,7 @@ namespace MovieTheatre.Controllers
         {
             public List<MovieTheatre.Models.Movie> suggestedMovies { get; set; }
             public List<MovieTheatre.Models.Rating> latestReviews { get; set; }
+            public List<MovieTheatre.Models.LocationPoint> locationPoints { get; set; }
         }
 
         public ActionResult Index()
