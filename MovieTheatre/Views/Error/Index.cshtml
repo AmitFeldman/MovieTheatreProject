@@ -3,20 +3,26 @@
     int currentUserId = ((int) Session["CurrentUserID"]);
 }
 
-<div class="box" style="text-align:center">
-    <div class="col-lg-12">
-        <hr>
-        <h2 class="intro-text text-center text-danger" style="font-size:30px">
-            Error
-            <strong>@ViewBag.ErrorMessage</strong>
-        </h2>
-        <hr>
+    <div class="box" style="text-align:center">
+        <div class="col-lg-12">
+            <hr>
+            <h2 class="intro-text text-center text-danger" style="font-size:30px">
+                Error
+                <strong>@ViewBag.ErrorMessage</strong>
+            </h2>
+            <hr>
+        </div>
+        <div>
+            @if (currentUserId == 0)
+            {
+                @Html.ActionLink("Login", "LogIn", "Home")
+            }
+        </div>
+
+        <br>
+
+        <video width="80%" height="20%" autoplay="autoplay" id="video" type="video/mp4"
+               src='~/Content/Images/freakreviews.mp4'>
+        </video>
     </div>
-    <div>
-        @if (currentUserId == 0)
-        {
-            @Html.ActionLink("Login", "LogIn", "Home")
-        }
-    </div>
-</div>
 

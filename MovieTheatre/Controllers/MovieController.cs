@@ -26,14 +26,13 @@ namespace MovieTheatre.Controllers
         }
 
         // GET: Movie
-        public ActionResult Index(string movieSearch)
+        public ActionResult Index(string movieName = "", string year = "", string director = "", string genre = "")
         {
-            var movies = from m in db.Movies select m;
-
-            if (!String.IsNullOrEmpty(movieSearch))
-            {
-                movies = movies.Where(s => s.Name.Contains(movieSearch));
-            }
+            var movies = db.Movies
+                   .Where(movie => movie.Name.Contains(movieName))
+                   .Where(movie => movie.Year.Contains(year))
+                   .Where(movie => movie.Director.Contains(director))
+                   .Where(movie => movie.Genre.Contains(genre));
 
             GetMovieDetails(movies);
 
@@ -50,10 +49,26 @@ namespace MovieTheatre.Controllers
             var genres = (from m in db.Movies
                           group m by m.Genre into g
                           orderby g.Count() descending
-                          select new GenreCount { genre = g.Key, amount = g.Count() });
+                          select new ChartData { label = g.Key, amount = g.Count() });
 
             var genreList = genres.ToList();
             result = this.Json(genreList, JsonRequestBehavior.AllowGet);
+
+            return result;
+        }
+
+        public ActionResult GetDirectorData()
+        {
+            JsonResult result = new JsonResult();
+
+            // Get count of each genre
+            var directors = (from m in db.Movies
+                          group m by m.Director into g
+                          orderby g.Count() descending
+                          select new ChartData { label = g.Key, amount = g.Count() });
+
+            var directorList = directors.ToList();
+            result = this.Json(directorList, JsonRequestBehavior.AllowGet);
 
             return result;
         }
@@ -83,7 +98,7 @@ namespace MovieTheatre.Controllers
                         item.Director = data["Director"].Value<string>();
                         item.Year = data["Year"].Value<string>();
                         genre = data["Genre"].Value<string>();
-                        item.Genre = genre.Contains(",") ? genre.Substring(0, genre.IndexOf(',')) 
+                        item.Genre = genre.Contains(",") ? genre.Substring(0, genre.IndexOf(','))
                                                          : genre;
                     }
                 }
@@ -127,11 +142,11 @@ namespace MovieTheatre.Controllers
         // GET: Movie/Create
         public ActionResult Create()
         {
-            var isCurrentUserManager = (Boolean) Session["isCurrentUserManager"];
+            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
 
             if (isCurrentUserManager == false)
             {
-                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!"});
+                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
             }
 
             return View();
