@@ -216,6 +216,15 @@ namespace MovieTheatre.Controllers
 
             if (ModelState.IsValid)
             {
+                List<Movie> duplicateMovies = db.Movies
+                    .Where((m) => m.Name == movie.Name )
+                    .ToList();
+
+                if (duplicateMovies.Count > 0)
+                {
+                    return RedirectToAction("Index", "Error", new { message = "Movie already exists!" });
+                }
+
                 db.Movies.Add(movie);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -238,6 +247,7 @@ namespace MovieTheatre.Controllers
             {
                 return RedirectToAction("Index", "Error");
             }
+
             Movie movie = db.Movies.Find(id);
             if (movie == null)
             {
@@ -262,6 +272,15 @@ namespace MovieTheatre.Controllers
 
             if (ModelState.IsValid)
             {
+                List<Movie> duplicateMovies = db.Movies
+                    .Where((m) => m.Name == movie.Name)
+                    .ToList();
+
+                if (duplicateMovies.Count > 0)
+                {
+                    return RedirectToAction("Index", "Error", new { message = "Movie already exists!" });
+                }
+
                 db.Entry(movie).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
