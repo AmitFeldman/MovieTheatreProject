@@ -144,9 +144,8 @@
       <DependentUpon>201908062216124_location.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\GenreCount.cs" />
-	 <Compile Include="Models\ChartData.cs" />
-	<Compile Include="Models\LocationPoint.cs" />
+    <Compile Include="Models\ChartData.cs" />
+    <Compile Include="Models\LocationPoint.cs" />
     <Compile Include="Models\GenreListItem.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Rating.cs" />
