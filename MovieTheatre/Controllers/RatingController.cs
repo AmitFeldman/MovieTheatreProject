@@ -59,8 +59,16 @@ namespace MovieTheatre.Controllers
         }
 
         // GET: Rating/Create
-        public ActionResult Create()
+        public ActionResult Create(int id = -1)
         {
+            Movie movie = db.Movies.Find(id);
+            if (movie == null)
+            {
+                return RedirectToAction("Index", "Error", new { message = "You shouldn't be here!" });
+            }
+
+            ViewBag.movie = movie;
+
             var currentUserID = (int)Session["CurrentUserID"];
 
             if (currentUserID == 0)
@@ -68,7 +76,10 @@ namespace MovieTheatre.Controllers
                 return RedirectToAction("Index", "Error", new { message = "You have to log on or create an account to write a review!" });
             }
 
-            return View();
+            Rating rating = new Rating();
+            rating.MovieID = movie.ID;
+
+            return View(rating);
         }
 
         // POST: Rating/Create
@@ -82,13 +93,18 @@ namespace MovieTheatre.Controllers
             rating.ReviewDate = DateTime.Now;
             rating.UserID = currentUserID;
 
+            if (rating.MovieID == 0)
+            {
+                return RedirectToAction("Index", "Error", new { message = "There was an error in submitting this review. Please try again." });
+            }
+
             if (currentUserID != 0)
             {
                 if (ModelState.IsValid)
                 {
                     db.Ratings.Add(rating);
                     db.SaveChanges();
-                    return Redirect("../User/Details/" + currentUserID);
+                    return RedirectToAction("Details/" + currentUserID, "User");
                 }
             }
 
