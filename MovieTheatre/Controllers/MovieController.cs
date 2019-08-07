@@ -139,29 +139,6 @@ namespace MovieTheatre.Controllers
             return View(detailsModel);
         }
 
-        public ActionResult AutocompleteMovieData(string movieName)
-        {
-            var client = new WebClient();
-            Movie movie = new Movie();
-            string httpString = "";
-            /* httpString = "http://www.omdbapi.com/?t=" +
-                                   name +
-                                   //  "&y=" + item.Year +
-                                   "&apikey=4c2cc9b2";
-             var json = client.DownloadString(httpString);
-             var data = (JObject)JsonConvert.DeserializeObject(json);
-             if (data["Response"].Value<string>() == "True")
-             {
-                 movie.Name = data["Title"].Value<string>();
-                 movie.Poster = data["Poster"].Value<string>();
-                 movie.Description = data["Plot"].Value<string>();
-                 movie.Director = data["Director"].Value<string>();
-                 movie.Year = data["Year"].Value<string>();
-                 movie.Genre = data["Genre"].Value<string>();
-             }*/
-            return RedirectToAction("Create", movie);
-        }
-
         // GET: Movie/Create
         public ActionResult Create()
         {
