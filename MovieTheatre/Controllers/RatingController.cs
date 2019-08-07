@@ -25,14 +25,9 @@ namespace MovieTheatre.Controllers
                 return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
             }
 
-            var ratings = db.Ratings.Where(review => review.User.Username.Contains(username))
-                                   .Where(review => review.Movie.Name.Contains(movieName));
-
-            if (stars != 0)
-            {
-                ratings = ratings.Where(s => s.Stars == stars);
-            }
-                                   
+            var ratings = db.Ratings.Where(review => review.User.Username.Contains(username) || username == null)
+                                    .Where(review => review.Movie.Name.Contains(movieName) || movieName == null)
+                                    .Where(review => review.Stars == stars || stars == 0);                        
             return View(ratings.ToList());
         }
 

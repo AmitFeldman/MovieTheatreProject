@@ -17,7 +17,6 @@ namespace MovieTheatre.Controllers
     public class MovieController : Controller
     {
         private Context db = new Context();
-        private Random rnd = new Random();
 
         public class MovieDetailsModel
         {
@@ -28,19 +27,25 @@ namespace MovieTheatre.Controllers
         // GET: Movie
         public ActionResult Index(string movieName = "", string year = "", string director = "", string genre = "")
         {
-            var movies = db.Movies
-                   .Where(movie => movie.Name.Contains(movieName))
-                   .Where(movie => movie.Year.Contains(year))
-                   .Where(movie => movie.Director.Contains(director))
-                   .Where(movie => movie.Genre.Contains(genre));
+            var movies = db.Movies;
 
-            GetMovieDetails(movies);
+            // Get details about movies from webservice
+            GetMovieDetails(movies.ToList());
 
+            // Filter movies
+            var showedMovies = db.Movies
+                   .Where(movie => movie.Name.Contains(movieName) || movieName == "")
+                   .Where(movie => movie.Year.Contains(year) || year == "")
+                   .Where(movie => movie.Director.Contains(director) || director == "")
+                   .Where(movie => movie.Genre.Contains(genre) || genre == "");
+            
+            // Get the Higher ranked movies
             HigherRankedMovies();
 
-            return View(movies.ToList());
+            return View(showedMovies.ToList());
         }
 
+        // Get the genres data for the graph
         public ActionResult GetGenreData()
         {
             JsonResult result = new JsonResult();
@@ -57,15 +62,16 @@ namespace MovieTheatre.Controllers
             return result;
         }
 
+        // Get the directors data for the graph
         public ActionResult GetDirectorData()
         {
             JsonResult result = new JsonResult();
 
-            // Get count of each genre
+            // Get count of each directors
             var directors = (from m in db.Movies
-                          group m by m.Director into g
-                          orderby g.Count() descending
-                          select new ChartData { label = g.Key, amount = g.Count() });
+                             group m by m.Director into g
+                             orderby g.Count() descending
+                             select new ChartData { label = g.Key, amount = g.Count() });
 
             var directorList = directors.ToList();
             result = this.Json(directorList, JsonRequestBehavior.AllowGet);
@@ -74,12 +80,13 @@ namespace MovieTheatre.Controllers
         }
 
         // Get the movies from the webservice and saves them in db
-        public void GetMovieDetails(IQueryable<Movie> movies)
+        public void GetMovieDetails(List<Movie> movies)
         {
             var client = new WebClient();
             string genre;
             foreach (var item in movies)
             {
+                // If need to find new information about the movie
                 if (item.Poster == null || item.Description == null ||
                     item.Director == null || item.Year == null ||
                     item.Genre == null)
@@ -88,18 +95,59 @@ namespace MovieTheatre.Controllers
                                   item.Name +
                                   "&y=" + item.Year +
                                   "&apikey=4c2cc9b2";
-                    var json = client.DownloadString(httpString);
-                    var data = (JObject)JsonConvert.DeserializeObject(json);
-
-                    if (data["Response"].Value<string>() == "True")
+                    try
                     {
-                        item.Poster = data["Poster"].Value<string>();
-                        item.Description = data["Plot"].Value<string>();
-                        item.Director = data["Director"].Value<string>();
-                        item.Year = data["Year"].Value<string>();
-                        genre = data["Genre"].Value<string>();
-                        item.Genre = genre.Contains(",") ? genre.Substring(0, genre.IndexOf(','))
-                                                         : genre;
+                        var json = client.DownloadString(httpString);
+                        var data = (JObject)JsonConvert.DeserializeObject(json);
+
+                        if (data["Response"].Value<string>() == "True")
+                        {
+                            item.Poster = data["Poster"].Value<string>();
+                            item.Description = data["Plot"].Value<string>();
+                            item.Director = data["Director"].Value<string>();
+                            item.Year = data["Year"].Value<string>();
+                            genre = data["Genre"].Value<string>();
+                            item.Genre = genre.Contains(",") ? genre.Substring(0, genre.IndexOf(','))
+                                                             : genre;
+                        }
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            // Backup webservice
+                            httpString = "https://api.themoviedb.org/3/search/movie?" +
+                                         "api_key=e62278365dd3d1d53e0415f424532c2a" +
+                                         "&query=" + item.Name;
+                            var json = client.DownloadString(httpString);
+                            var data = (JObject)JsonConvert.DeserializeObject(json);
+
+                            if (data["total_results"].Value<string>() != "0")
+                            {
+                                item.Poster = "https://image.tmdb.org/t/p/w500" + data["results"][0]["poster_path"].Value<string>();
+                                item.Description = data["results"][0]["overview"].Value<string>();
+                                //item.Director = data["results"][0]["Director"].Value<string>(); *not avilable in this webservice
+                                item.Year = data["results"][0]["release_date"].Value<string>().Substring(0, 4);
+                                var genreId = data["results"][0]["genre_ids"][0].Value<string>();
+                                // Get the genre name
+                                httpString = "https://api.themoviedb.org/3/genre/movie/list" +
+                                             "?api_key=e62278365dd3d1d53e0415f424532c2a" +
+                                             "&language=en-US";
+                                json = client.DownloadString(httpString);
+                                data = (JObject)JsonConvert.DeserializeObject(json);
+                                var genres = data["genres"].ToList();
+                                foreach (var genreType in genres)
+                                    if (genreType["id"].ToString() == genreId)
+                                    {
+                                        item.Genre = genreType["name"].ToString();
+                                        break;
+                                    }
+                            }
+                        }
+                        catch
+                        {
+                            break;
+                        }
                     }
                 }
             }
@@ -137,29 +185,6 @@ namespace MovieTheatre.Controllers
             detailsModel.movieReviews = db.Ratings.Where(review => review.MovieID == movie.ID).ToList();
 
             return View(detailsModel);
-        }
-
-        public ActionResult AutocompleteMovieData(string movieName)
-        {
-            var client = new WebClient();
-            Movie movie = new Movie();
-            string httpString = "";
-            /* httpString = "http://www.omdbapi.com/?t=" +
-                                   name +
-                                   //  "&y=" + item.Year +
-                                   "&apikey=4c2cc9b2";
-             var json = client.DownloadString(httpString);
-             var data = (JObject)JsonConvert.DeserializeObject(json);
-             if (data["Response"].Value<string>() == "True")
-             {
-                 movie.Name = data["Title"].Value<string>();
-                 movie.Poster = data["Poster"].Value<string>();
-                 movie.Description = data["Plot"].Value<string>();
-                 movie.Director = data["Director"].Value<string>();
-                 movie.Year = data["Year"].Value<string>();
-                 movie.Genre = data["Genre"].Value<string>();
-             }*/
-            return RedirectToAction("Create", movie);
         }
 
         // GET: Movie/Create
