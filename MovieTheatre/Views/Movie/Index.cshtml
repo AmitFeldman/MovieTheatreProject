@@ -7,7 +7,6 @@
 
 <h2 class="header-text">@ViewBag.Title</h2>
 
-
 @if (isCurrentUserManager)
 {
     <p>
@@ -16,10 +15,21 @@
 }
 
 <form asp-controller="Movie" asp-action="Index">
-    <div class="input-group" style="display: block;">
-        <input type="text" name="movieSearch" class="form-control">
+    <div class="input-group">
+        <label class="input-group-addon">Name</label>
+        <input type="text" name="movieName" class="form-control">
+
+        <label class="input-group-addon">Year</label>
+        <input type="text" name="year" class="form-control">
+
+        <label class="input-group-addon">Director</label>
+        <input type="text" name="director" class="form-control">
+
+        <label class="input-group-addon">Genre</label>
+        <input type="text" name="genre" class="form-control">
+
         <div class="input-group-btn">
-            <button type="submit" class="btn btn-primary">Filter By Movie Name</button>
+            <button type="submit" class="btn btn-primary">Filter</button>
         </div>
     </div>
 </form>
@@ -29,7 +39,7 @@
     {
         <div class="col-sm-4">
             <a href="/Movie/Details/@movie.ID">
-                <img class="review-img" src="@movie.Poster" style="width: 90%; margin: 5%; max-height: 465px"/>
+                <img class="review-img" src="@movie.Poster" style="width: 90%; margin: 5%; height: 465px" />
             </a>
         </div>
     }
@@ -38,73 +48,56 @@
 <hr />
 
 <div>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <div id="ratings-chart" style="height: 370px; width: 100%;"></div>
     <div class="row">
-        <div id="GenresChart" class="element1 col-md-5"></div>
-        <div id="Directors" class="element2 col-md-7"></div>
+        <div id="genre-chart" class="element1 col-md-5"></div>
+        <div id="director-chart" class="element2 col-md-7"></div>
     </div>
 
     <script type="text/javascript">
         $(document).ready(() => {
+            getAjaxData('GetGenreData', (response) =>
+                drawChart(response, 'Genre', 'genre-chart'));
+            getAjaxData('GetDirectorData', (response) =>
+                drawChart(response, 'Director', 'director-chart'));
+        });
+
+        function getAjaxData(functionName, callback) {
             $.ajax({
                 type: 'POST',
                 dataType: 'JSON',
-                url: '/Movie/GetGenreData',
+                url: '/Movie/GetDirectorData',
                 success: (response) => {
-                    google.charts.setOnLoadCallback(() => {
-                        drawGenreChart(response);
-                    });
+                    callback(response);
                 }
             })
-        });
-
-        google.charts.setOnLoadCallback(() => {
-            drawDirectorsChart();
-        });
-
-        // Draw the chart and set the chart values
-        function drawGenreChart(genres) {
-            var data = google.visualization.arrayToDataTable([
-                ['Genre', 'Movies'], ...genres.map(({ genre, amount }) => [genre, amount])
-            ]);
-
-            // Optional; add a title and set the width and height of the chart
-            var options = { 'title': 'Movie Genres', 'width': 550, 'height': 400 };
-
-            // Display the chart inside the <div> element with id="GenresChart"
-            var chart = new google.visualization.PieChart(document.getElementById('GenresChart'));
-            chart.draw(data, options);
         }
 
         // Draw the chart and set the chart values
-        function drawDirectorsChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Genre', 'Movies'],
-                ['Jameson Cameron', 20],
-                ['Alfred Hitchcock', 10],
-                ['Steven Spielberg', 5],
-                ['Christopher Nolan', 4],
-                ["Quentin Tarantino", 3],
-                ['Charles Chaplin', 2]
-            ]);
+        function drawChart(chartData, name, elementId) {
+            google.charts.setOnLoadCallback(() => {
+                var displayName = name + 's';
+                var data = google.visualization.arrayToDataTable([
+                    [name, 'Movies'], ...chartData.map(({ label, amount }) => [label, amount])
+                ]);
 
-            // Optional; add a title and set the width and height of the chart
-            var options = { 'title': 'Movies of Directors', 'width': 550, 'height': 400 };
+                // Optional; add a title and set the width and height of the chart
+                var options = { 'title': name + 's', 'width': 550, 'height': 400 };
 
-            // Display the chart inside the <div> element with id="Directors"
-            var chart = new google.visualization.PieChart(document.getElementById('Directors'));
-            chart.draw(data, options);
+                // Display the chart inside the <div> element with id="Directors"
+                var chart = new google.visualization.PieChart(document.getElementById(elementId));
+                chart.draw(data, options);
+            })
         }
-
     </script>
+
     <script>
         window.onload = function () {
-
-            var chart = new CanvasJS.Chart("chartContainer", {
+            var chart = new CanvasJS.Chart("ratings-chart", {
                 animationEnabled: true,
                 theme: "light2",
                 title: {
-                    text: "Highest rated movies"
+                    text: "Movie Ratings"
                 },
                 axisY: {
                     includeZero: false
