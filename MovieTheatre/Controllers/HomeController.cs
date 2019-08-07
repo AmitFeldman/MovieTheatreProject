@@ -19,7 +19,6 @@ namespace MovieTheatre.Controllers
         {
             public List<MovieTheatre.Models.Movie> suggestedMovies { get; set; }
             public List<MovieTheatre.Models.Rating> latestReviews { get; set; }
-            public List<MovieTheatre.Models.LocationPoint> locationPoints { get; set; }
         }
 
         public ActionResult Index()
@@ -115,16 +114,14 @@ namespace MovieTheatre.Controllers
             return RedirectToAction("../User/Create");
         }*/
 
-        public ActionResult GetLocationPoint()
+        public ActionResult GetLocationPoints()
         {
             JsonResult result = new JsonResult();
 
             // Get count of each genre
-            var points = (from m in db.LocationPoints
-                          select new LocationPoint { lat = m.lat, lng = m.lng });
+            List<LocationPoint> locationPoints = db.LocationPoints.ToList();
 
-            var pointList = points.ToList();
-            result = this.Json(pointList, JsonRequestBehavior.AllowGet);
+            result = this.Json(locationPoints, JsonRequestBehavior.AllowGet);
 
             return result;
         }
