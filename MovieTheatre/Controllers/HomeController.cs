@@ -25,6 +25,8 @@ namespace MovieTheatre.Controllers
 
         public ActionResult Index()
         {
+            MovieTheatre.Util.MovieManager.UpdateMovies(db.Movies.ToList(), db);
+
             HomeModel homeModel = new HomeModel();
             homeModel.suggestedMovies = SuggestedMovies();
             homeModel.latestReviews = db.Ratings.OrderByDescending(review => review.ReviewDate).Take(3).ToList();
