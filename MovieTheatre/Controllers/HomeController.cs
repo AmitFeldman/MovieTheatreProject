@@ -114,5 +114,19 @@ namespace MovieTheatre.Controllers
             //return Redirect("../User/Create");
             return RedirectToAction("../User/Create");
         }*/
+
+        public ActionResult GetLocationPoint()
+        {
+            JsonResult result = new JsonResult();
+
+            // Get count of each genre
+            var points = (from m in db.LocationPoints
+                          select new LocationPoint { lat = m.lat, lng = m.lng });
+
+            var pointList = points.ToList();
+            result = this.Json(pointList, JsonRequestBehavior.AllowGet);
+
+            return result;
+        }
     }
 }

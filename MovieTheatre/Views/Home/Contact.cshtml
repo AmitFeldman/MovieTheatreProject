@@ -29,10 +29,18 @@
 <script>
     // Initialize and add the map
     function initMap() {
-        
+        $.ajax({
+            type: 'POST',
+            dataType: 'JSON',
+            url: '/Home/GetLocationPoints',
+            success: (response) => {
+                callback(response);
+            }
+        })
+
             // The location of Uluru
             //var uluru = { lat: -25.344, lng: 131.036 };
-            var uluru = { lat: 20, lng: 100 };
+        var uluru = { lat: 32.0804808, lng: 34.7805274 };
          
                 // The map, centered at Uluru
                 var map = new google.maps.Map(
