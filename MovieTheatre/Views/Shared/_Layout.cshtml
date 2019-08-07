@@ -19,19 +19,8 @@
 </head>
 
 @{
-    var currentUserID = 0;
-    var isCurrentUserManager = false;
-
-    try
-    {
-        currentUserID = (int)Session["CurrentUserID"];
-        isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
-    }
-    catch
-    {
-        Session.Add("CurrentUserID", currentUserID);
-        Session.Add("isCurrentUserManager", isCurrentUserManager);
-    }
+    Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
+    Boolean isUserLoggedOn = MovieTheatre.Util.SessionManager.isUserLoggedOn(Session);
 }
 
 <body>
@@ -60,13 +49,13 @@
                 <ul class="nav navbar-nav" style="width: 80%">
                     <li>@Html.ActionLink("Movies", "Index", "Movie")</li>
 
-                    @if (currentUserID != 0 && isCurrentUserManager == true)
+                    @if (isUserLoggedOn && isCurrentUserManager)
                     {
                         <li>@Html.ActionLink("Users", "Index", "User")</li>
                         <li>@Html.ActionLink("Ratings", "Index", "Rating")</li>
                     }
 
-                    @if (currentUserID == 0)
+                    @if (!isUserLoggedOn)
                     {
                         <li class="pull-right">@Html.ActionLink("Log In", "LogIn", "Home")</li>
                     }

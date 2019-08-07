@@ -10,7 +10,6 @@ namespace MovieTheatre.Models
     public class LocationPoint
     {
         public int ID { get; set; }
-        [Required]
         public double lat { get; set; }
         public double lng { get; set; }
     }

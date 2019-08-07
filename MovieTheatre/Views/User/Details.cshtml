@@ -6,7 +6,7 @@
 
 @{
     ViewBag.Title = @Model.user.Username;
-    var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+    Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 }
 <header>
     <h2 class="header-text">

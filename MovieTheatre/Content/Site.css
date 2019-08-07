@@ -4,6 +4,22 @@
     src: url(https://fonts.gstatic.com/s/redhattext/v1/RrQXbohi_ic6B3yVSzGBrMxQaKct.woff2) format('woff2');
 }
 
+.suggest-txt {
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+}
+
+#canvas-logo {
+    -webkit-transition: -webkit-transform .8s ease-in-out;
+    transition: transform .8s ease-in-out;
+}
+
+#canvas-logo:hover {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
 .header-text {
     text-shadow: #e0e0e0 2px 2px 0;
 }

@@ -171,12 +171,12 @@ namespace MovieTheatre.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Error");
             }
             Movie movie = db.Movies.Find(id);
             if (movie == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Error", new { message = "Movie not found!" });
             }
 
             MovieDetailsModel detailsModel = new MovieDetailsModel();
@@ -190,7 +190,7 @@ namespace MovieTheatre.Controllers
         // GET: Movie/Create
         public ActionResult Create()
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -207,7 +207,7 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Name,Genre,Description,Year,Director,Poster,Trailer")] Movie movie)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -227,7 +227,7 @@ namespace MovieTheatre.Controllers
         // GET: Movie/Edit/5
         public ActionResult Edit(int? id)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -236,12 +236,12 @@ namespace MovieTheatre.Controllers
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Error");
             }
             Movie movie = db.Movies.Find(id);
             if (movie == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Error", new { message = "Movie not found!" });
             }
             return View(movie);
         }
@@ -253,7 +253,7 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name,Genre,Description,Year,Director,Poster,Trailer")] Movie movie)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -272,7 +272,7 @@ namespace MovieTheatre.Controllers
         // GET: Movie/Delete/5
         public ActionResult Delete(int? id)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -281,12 +281,12 @@ namespace MovieTheatre.Controllers
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Error");
             }
             Movie movie = db.Movies.Find(id);
             if (movie == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Error", new { message = "Movie not found!" });
             }
             return View(movie);
         }
@@ -296,7 +296,7 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {

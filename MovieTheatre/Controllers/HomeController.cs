@@ -25,25 +25,6 @@ namespace MovieTheatre.Controllers
 
         public ActionResult Index()
         {
-            // Finding connected user
-            try
-            {
-                var currentUserID = Session["CurrentUserID"];
-                var isCurrentUserManager = Session["isCurrentUserManager"];
-
-                if (currentUserID == null || isCurrentUserManager == null)
-                {
-                    Session.Add("CurrentUserID", 0);
-                    Session.Add("isCurrentUserManager", false);
-                }
-            }
-            catch
-            {
-                // Not found
-                Session.Add("CurrentUserID", 0);
-                Session.Add("isCurrentUserManager", false);
-            }
-
             HomeModel homeModel = new HomeModel();
             homeModel.suggestedMovies = SuggestedMovies();
             homeModel.latestReviews = db.Ratings.OrderByDescending(review => review.ReviewDate).Take(3).ToList();
@@ -54,7 +35,7 @@ namespace MovieTheatre.Controllers
         // Get the suggestedMovies
         public List<Movie> SuggestedMovies()
         {
-            int currentUserID = (int)Session["CurrentUserID"];
+            int currentUserID = MovieTheatre.Util.SessionManager.getUserID(Session);
             List<Movie> suggestedMovies = new List<Movie>();
 
             // Get the favorites genres by average rating at descending level
@@ -154,12 +135,8 @@ namespace MovieTheatre.Controllers
 
                 if (currentUser != null && currentUser.ID != 0)
                 {
-                    // Logged in
-                    Session.Remove("CurrentUserID");
-                    Session.Remove("isCurrentUserManager");
+                    MovieTheatre.Util.SessionManager.setUserLoggedOn(Session, currentUser.ID, currentUser.isManager);
 
-                    Session.Add("CurrentUserID", currentUser.ID);
-                    Session.Add("isCurrentUserManager", currentUser.isManager);
                     return RedirectToAction("Index");
                 }
                 else
@@ -173,11 +150,7 @@ namespace MovieTheatre.Controllers
 
         public ActionResult Logout()
         {
-            Session.Remove("CurrentUserID");
-            Session.Remove("isCurrentUserManager");
-
-            Session.Add("CurrentUserID", 0);
-            Session.Add("isCurrentUserManager", false);
+            MovieTheatre.Util.SessionManager.setUserLoggedOff(Session);
             return Redirect("LogIn");
         }
 

@@ -24,7 +24,7 @@ namespace MovieTheatre.Controllers
         // GET: User
         public ActionResult Index(string userName)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -47,12 +47,12 @@ namespace MovieTheatre.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Error");
             }
             User user = db.Users.Find(id);
             if (user == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Error", new { message = "User not found!" });
             }
 
             UserDetailsModel detailsModel = new UserDetailsModel();
@@ -68,13 +68,6 @@ namespace MovieTheatre.Controllers
         // GET: User/Create
         public ActionResult Create()
         {
-            //var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
-
-            //if (isCurrentUserManager == false)
-            //{
-            //    return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
-            //}
-
             return View();
         }
 
@@ -85,20 +78,15 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Username,Email,Password")] User user)
         {
-            var currentUserID = (int)Session["CurrentUserID"];
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
-
-            //if (isCurrentUserManager == false)
-            //{
-            //    return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
-            //}
+            Boolean isUserLoggedOn = MovieTheatre.Util.SessionManager.isUserLoggedOn(Session);
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (ModelState.IsValid)
             {
                 db.Users.Add(user);
                 db.SaveChanges();
 
-                if (currentUserID != 0 && isCurrentUserManager)
+                if (isUserLoggedOn && isCurrentUserManager)
                     return RedirectToAction("Index");
                 else
                     return RedirectToAction("../Home/Index");
@@ -110,7 +98,7 @@ namespace MovieTheatre.Controllers
         // GET: User/Edit/5
         public ActionResult Edit(int? id)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -119,12 +107,12 @@ namespace MovieTheatre.Controllers
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Error");
             }
             User user = db.Users.Find(id);
             if (user == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Error", new { message = "User not found!" });
             }
             return View(user);
         }
@@ -136,7 +124,7 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Username,Email,Password")] User user)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -155,7 +143,7 @@ namespace MovieTheatre.Controllers
         // GET: User/Delete/5
         public ActionResult Delete(int? id)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -164,12 +152,12 @@ namespace MovieTheatre.Controllers
 
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", "Error");
             }
             User user = db.Users.Find(id);
             if (user == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Error", new { message = "User not found!" });
             }
             return View(user);
         }
@@ -179,7 +167,7 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {

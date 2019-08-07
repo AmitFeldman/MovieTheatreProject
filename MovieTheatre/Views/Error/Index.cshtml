@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Error";
-    int currentUserId = ((int) Session["CurrentUserID"]);
+    Boolean isUserLoggedOn = MovieTheatre.Util.SessionManager.isUserLoggedOn(Session);
 }
 
     <div class="box" style="text-align:center">
@@ -13,9 +13,9 @@
             <hr>
         </div>
         <div>
-            @if (currentUserId == 0)
+            @if (!isUserLoggedOn)
             {
-                @Html.ActionLink("Login", "LogIn", "Home")
+                @Html.ActionLink("Log In", "LogIn", "Home")
             }
         </div>
 
