@@ -18,7 +18,7 @@ namespace MovieTheatre.Controllers
         // GET: Rating
         public ActionResult Index(string username = "", string movieName = "", int stars = 0)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -34,7 +34,7 @@ namespace MovieTheatre.Controllers
         // GET: Rating/Details/5
         public ActionResult Details(int? id)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -64,9 +64,9 @@ namespace MovieTheatre.Controllers
 
             ViewBag.movie = movie;
 
-            var currentUserID = (int)Session["CurrentUserID"];
+            Boolean isUserLoggedOn = MovieTheatre.Util.SessionManager.isUserLoggedOn(Session);
 
-            if (currentUserID == 0)
+            if (!isUserLoggedOn)
             {
                 return RedirectToAction("Index", "Error", new { message = "You have to log on or create an account to write a review!" });
             }
@@ -84,19 +84,21 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,UserID,MovieID,Review,Stars,ReviewDate")] Rating rating)
         {
-            var currentUserID = (int)Session["CurrentUserID"];
-            rating.ReviewDate = DateTime.Now;
-            rating.UserID = currentUserID;
+            Boolean isUserLoggedOn = MovieTheatre.Util.SessionManager.isUserLoggedOn(Session);
 
             if (rating.MovieID == 0)
             {
                 return RedirectToAction("Index", "Error", new { message = "There was an error in submitting this review. Please try again." });
             }
 
-            if (currentUserID != 0)
+            if (isUserLoggedOn)
             {
                 if (ModelState.IsValid)
                 {
+                    rating.ReviewDate = DateTime.Now;
+                    int currentUserID = MovieTheatre.Util.SessionManager.getUserID(Session);
+                    rating.UserID = currentUserID;
+
                     db.Ratings.Add(rating);
                     db.SaveChanges();
                     return RedirectToAction("Details/" + currentUserID, "User");
@@ -109,7 +111,7 @@ namespace MovieTheatre.Controllers
         // GET: Rating/Edit/5
         public ActionResult Edit(int? id)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -135,7 +137,7 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,UserID,MovieID,Review,Stars,ReviewDate")] Rating rating)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -154,7 +156,7 @@ namespace MovieTheatre.Controllers
         // GET: Rating/Delete/5
         public ActionResult Delete(int? id)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {
@@ -178,7 +180,7 @@ namespace MovieTheatre.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 
             if (isCurrentUserManager == false)
             {

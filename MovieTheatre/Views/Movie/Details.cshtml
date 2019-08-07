@@ -6,7 +6,7 @@
 
 @{
     ViewBag.Title = Model.movie.Name;
-    var isCurrentUserManager = (Boolean)Session["isCurrentUserManager"];
+    Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
 }
 
 <header>
@@ -139,7 +139,7 @@
     <hr />
 </content>
 
-@if (isCurrentUserManager == true)
+@if (isCurrentUserManager)
 {
     <p>
         @Html.ActionLink("Edit Movie", "Edit", new { id = Model.movie.ID }) |
