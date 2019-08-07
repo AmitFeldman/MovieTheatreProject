@@ -83,6 +83,15 @@ namespace MovieTheatre.Controllers
 
             if (ModelState.IsValid)
             {
+                List<User> duplicateUsers = db.Users
+                    .Where((u) => u.Email == user.Email || u.Username == user.Username)
+                    .ToList();
+
+                if (duplicateUsers.Count > 0)
+                {
+                    return RedirectToAction("Index", "Error", new { message = "This Username/Email is already in use. Try again!" });
+                }
+
                 db.Users.Add(user);
                 db.SaveChanges();
 
@@ -133,6 +142,15 @@ namespace MovieTheatre.Controllers
 
             if (ModelState.IsValid)
             {
+                List<User> duplicateUsers = db.Users
+                    .Where((u) => u.Email == user.Email || u.Username == user.Username)
+                    .ToList();
+                
+                if (duplicateUsers.Count > 0)
+                {
+                    return RedirectToAction("Index", "Error", new { message = "This Username/Email is already in use. Try again!" });
+                }
+
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
