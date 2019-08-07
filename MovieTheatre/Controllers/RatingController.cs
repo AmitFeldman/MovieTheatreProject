@@ -93,7 +93,7 @@ namespace MovieTheatre.Controllers
             rating.ReviewDate = DateTime.Now;
             rating.UserID = currentUserID;
 
-            if (rating.MovieID == null || rating.MovieID == 0)
+            if (rating.MovieID == 0)
             {
                 return RedirectToAction("Index", "Error", new { message = "There was an error in submitting this review. Please try again." });
             }
