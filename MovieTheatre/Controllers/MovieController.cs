@@ -17,7 +17,6 @@ namespace MovieTheatre.Controllers
     public class MovieController : Controller
     {
         private Context db = new Context();
-        private Random rnd = new Random();
 
         public class MovieDetailsModel
         {
@@ -30,20 +29,23 @@ namespace MovieTheatre.Controllers
         {
             var movies = db.Movies;
 
+            // Get details about movies from webservice
             GetMovieDetails(movies.ToList());
 
-            // Added bc Null movies not shows
+            // Filter movies
             var showedMovies = db.Movies
                    .Where(movie => movie.Name.Contains(movieName) || movieName == "")
                    .Where(movie => movie.Year.Contains(year) || year == "")
                    .Where(movie => movie.Director.Contains(director) || director == "")
                    .Where(movie => movie.Genre.Contains(genre) || genre == "");
-
+            
+            // Get the Higher ranked movies
             HigherRankedMovies();
 
             return View(showedMovies.ToList());
         }
 
+        // Get the genres data for the graph
         public ActionResult GetGenreData()
         {
             JsonResult result = new JsonResult();
@@ -60,6 +62,7 @@ namespace MovieTheatre.Controllers
             return result;
         }
 
+        // Get the directors data for the graph
         public ActionResult GetDirectorData()
         {
             JsonResult result = new JsonResult();
@@ -83,6 +86,7 @@ namespace MovieTheatre.Controllers
             string genre;
             foreach (var item in movies)
             {
+                // If need to find new information about the movie
                 if (item.Poster == null || item.Description == null ||
                     item.Director == null || item.Year == null ||
                     item.Genre == null)

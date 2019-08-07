@@ -68,13 +68,6 @@ namespace MovieTheatre.Controllers
         // GET: User/Create
         public ActionResult Create()
         {
-            Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
-
-            if (isCurrentUserManager == false)
-            {
-                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
-            }
-
             return View();
         }
 
@@ -87,11 +80,6 @@ namespace MovieTheatre.Controllers
         {
             Boolean isUserLoggedOn = MovieTheatre.Util.SessionManager.isUserLoggedOn(Session);
             Boolean isCurrentUserManager = MovieTheatre.Util.SessionManager.isCurrentUserManager(Session);
-
-            if (isCurrentUserManager == false)
-            {
-                return RedirectToAction("Index", "Error", new { message = "You're not allowed here!" });
-            }
 
             if (ModelState.IsValid)
             {

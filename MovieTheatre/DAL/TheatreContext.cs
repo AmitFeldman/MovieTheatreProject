@@ -23,6 +23,8 @@ namespace MovieTheatre.DAL
 
         public DbSet<Rating> Ratings { get; set; }
 
+        public DbSet<LocationPoint> LocationPoints { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

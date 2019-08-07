@@ -13,7 +13,6 @@ namespace MovieTheatre.Controllers
     public class HomeController : Controller
     {
         private Context db = new Context();
-        public string[] Posters { get; set; }
         public int numberOfSuggested = 0;
         const int minNumOfMovies = 3,
                   maxNumOfMovies = 5;
@@ -53,6 +52,7 @@ namespace MovieTheatre.Controllers
                           where r.UserID == currentUserID
                           select m).ToList();
 
+            // Getting movies unrated from each genre
             for (var i = 0; i < genres.Count() && numberOfSuggested < minNumOfMovies; i++)
             {
                 GetMoviesFromGenre(genres[i].genre, movies, suggestedMovies);
@@ -127,11 +127,11 @@ namespace MovieTheatre.Controllers
         {
             if (u.Email != null && u.Password != null)
             {
+                // Trying to find user
                 var currentUser =
                 (from user in db.Users
                  where user.Email.Equals(u.Email) && user.Password.Equals(u.Password)
                  select user).FirstOrDefault();
-                db.Users.Where((user) => user.Email.Equals(u.Email) && user.Password.Equals(u.Password)).FirstOrDefault();
 
                 if (currentUser != null && currentUser.ID != 0)
                 {
@@ -152,6 +152,18 @@ namespace MovieTheatre.Controllers
         {
             MovieTheatre.Util.SessionManager.setUserLoggedOff(Session);
             return Redirect("LogIn");
+        }
+
+
+        public ActionResult GetLocationPoints()
+        {
+            JsonResult result = new JsonResult();
+
+            List<LocationPoint> locationPoints = db.LocationPoints.ToList();
+
+            result = this.Json(locationPoints, JsonRequestBehavior.AllowGet);
+
+            return result;
         }
     }
 }

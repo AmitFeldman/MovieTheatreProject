@@ -139,9 +139,13 @@
     <Compile Include="Migrations\201908061115260_Initial.Designer.cs">
       <DependentUpon>201908061115260_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908062216124_location.cs" />
+    <Compile Include="Migrations\201908062216124_location.Designer.cs">
+      <DependentUpon>201908062216124_location.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ChartData.cs" />
-    <Compile Include="Models\GenreListItem.cs" />
+    <Compile Include="Models\LocationPoint.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\User.cs" />
@@ -222,6 +226,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Contact\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -239,6 +244,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201908061115260_Initial.resx">
       <DependentUpon>201908061115260_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908062216124_location.resx">
+      <DependentUpon>201908062216124_location.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
